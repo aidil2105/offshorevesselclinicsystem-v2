@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - MarMed Onboard Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-wrapper">
+        <div class="main-card">
+            <!-- Header -->
+            <header class="header-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div class="logo-title-section">
+                        <div class="logo-box">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23003d82'/%3E%3Cpath d='M50 20 L50 80 M20 50 L80 50' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%2300a3e0'/%3E%3C/svg%3E" alt="MarMed Logo">
+                        </div>
+                        <div class="title-box">
+                            MarMed Onboard Clinic
+                        </div>
+                    </div>
+                    <div class="nav-links">
+                        <a href="#">User Profile</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- Sidebar Navigation -->
+                <aside class="sidebar">
+                    <nav>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="crew-records.html">Crew Records</a></li>
+                            <li><a href="visit-log.html">Visit Log</a></li>
+                            <li><a href="emergencies.html">Emergencies</a></li>
+                            <li><a href="medicine-inventory.html">Medicine Inventory</a></li>
+                            <li><a href="analytics.html" class="active">Analytics</a></li>
+                            <li><a href="settings.html">Settings</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <h1 class="page-title">Health Analytics Dashboard</h1>
+
+                    <!-- Filters -->
+                    <div class="filters-row">
+                        <input type="text" class="filter-input" placeholder="📅 Select Date Range">
+                        <select class="filter-input">
+                            <option>All Voyages</option>
+                            <option>Current Voyage</option>
+                            <option>Last Voyage</option>
+                            <option>Last 3 Months</option>
+                            <option>Last 6 Months</option>
+                            <option>Year to Date</option>
+                        </select>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-grid">
+                        <!-- Chart 1: Common Conditions -->
+                        <div class="chart-card">
+                            <div class="chart-title">
+                                <span>📊</span> Common Conditions
+                            </div>
+                            <div class="chart-placeholder">
+                                <div class="chart-icon">📊</div>
+                                <div>Bar Chart</div>
+                                <div style="font-size: 14px; margin-top: 10px; color: #0059b3;">
+                                    Frequency of Medical Conditions
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Weekly Visits -->
+                        <div class="chart-card">
+                            <div class="chart-title">
+                                <span>📈</span> Weekly Visits
+                            </div>
+                            <div class="chart-placeholder">
+                                <div class="chart-icon">📈</div>
+                                <div>Line Chart</div>
+                                <div style="font-size: 14px; margin-top: 10px; color: #0059b3;">
+                                    Patient Visit Trends Over Time
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 3: Medicine Usage -->
+                        <div class="chart-card">
+                            <div class="chart-title">
+                                <span>🍰</span> Medicine Usage
+                            </div>
+                            <div class="chart-placeholder">
+                                <div class="chart-icon">🍰</div>
+                                <div>Pie Chart</div>
+                                <div style="font-size: 14px; margin-top: 10px; color: #0059b3;">
+                                    Distribution of Medication Usage
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 4: Ship Route Health Incidents -->
+                        <div class="chart-card">
+                            <div class="chart-title">
+                                <span>🗺️</span> Ship Route Health Incidents
+                            </div>
+                            <div class="chart-placeholder">
+                                <div class="chart-icon">🗺️</div>
+                                <div>Geographic Map</div>
+                                <div style="font-size: 14px; margin-top: 10px; color: #0059b3;">
+                                    Health Incidents by Location
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Training Video Section -->
+                    <div class="video-section">
+                        <div class="video-title">
+                            <span>🎓</span> Medical Training Resources
+                        </div>
+                        <div class="video-placeholder">
+                            <div class="video-icon">▶️</div>
+                            <div>Training Video Player</div>
+                            <div style="font-size: 14px; margin-top: 10px; opacity: 0.9;">
+                                Maritime Medical Procedures & Protocols
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Inventory - MarMed Onboard Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container-wrapper">
+        <div class="main-card">
+            <!-- Header -->
+            <header class="header-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div class="logo-title-section">
+                        <div class="logo-box">
+                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23003d82'/%3E%3Cpath d='M50 20 L50 80 M20 50 L80 50' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%2300a3e0'/%3E%3C/svg%3E" alt="MarMed Logo">
+                        </div>
+                        <div class="title-box">
+                            MarMed Onboard Clinic
+                        </div>
+                    </div>
+                    <div class="nav-links">
+                        <a href="#">User Profile</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- Sidebar Navigation -->
+                <aside class="sidebar">
+                    <nav>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="crew-records.html">Crew Records</a></li>
+                            <li><a href="visit-log.html">Visit Log</a></li>
+                            <li><a href="emergencies.html">Emergencies</a></li>
+                            <li><a href="medicine-inventory.html" class="active">Medicine Inventory</a></li>
+                            <li><a href="analytics.html">Analytics</a></li>
+                            <li><a href="settings.html">Settings</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <h1 class="page-title">Medicine Inventory</h1>
+
+                    <!-- Controls Row -->
+                    <div class="controls-row">
+                        <div class="filters">
+                            <select class="filter-input">
+                                <option>All Stock Levels</option>
+                                <option>Critical (Below 10)</option>
+                                <option>Low (10-25)</option>
+                                <option>Good (Above 25)</option>
+                            </select>
+                            <select class="filter-input">
+                                <option>All Expiry Dates</option>
+                                <option>Expired</option>
+                                <option>Expiring Soon (30 days)</option>
+                                <option>Valid</option>
+                            </select>
+                            <select class="filter-input">
+                                <option>All Categories</option>
+                                <option>Analgesics</option>
+                                <option>Antibiotics</option>
+                                <option>Cardiac</option>
+                                <option>Emergency</option>
+                            </select>
+                        </div>
+                        <button class="add-btn">+ Add New Medicine</button>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-container">
+                        <div class="table-header">Medicine Stock Management</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Medicine Name</th>
+                                    <th>Stock</th>
+                                    <th>Expiry</th>
+                                    <th>Reorder Level</th>
+                                    <th>Location</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Paracetamol 500mg</td>
+                                    <td class="stock-good">150 tablets</td>
+                                    <td>2026-06-15</td>
+                                    <td>50 tablets</td>
+                                    <td>Main Clinic - Cabinet A</td>
+                                    <td>Analgesics</td>
+                                </tr>
+                                <tr>
+                                    <td>Amoxicillin 250mg</td>
+                                    <td class="stock-low">8 boxes</td>
+                                    <td>2025-12-30</td>
+                                    <td>20 boxes</td>
+                                    <td>Main Clinic - Refrigerator</td>
+                                    <td>Antibiotics</td>
+                                </tr>
+                                <tr>
+                                    <td>Ibuprofen 400mg</td>
+                                    <td class="stock-good">200 tablets</td>
+                                    <td>2026-03-20</td>
+                                    <td>75 tablets</td>
+                                    <td>Main Clinic - Cabinet A</td>
+                                    <td>Analgesics</td>
+                                </tr>
+                                <tr>
+                                    <td>Epinephrine Auto-Injector</td>
+                                    <td class="stock-low">3 units</td>
+                                    <td class="expiry-caution">2025-12-01</td>
+                                    <td>5 units</td>
+                                    <td>Emergency Kit</td>
+                                    <td>Emergency</td>
+                                </tr>
+                                <tr>
+                                    <td>Aspirin 300mg</td>
+                                    <td class="stock-medium">22 boxes</td>
+                                    <td>2026-08-10</td>
+                                    <td>20 boxes</td>
+                                    <td>Main Clinic - Cabinet B</td>
+                                    <td>Cardiac</td>
+                                </tr>
+                                <tr>
+                                    <td>Antihistamine Tablets</td>
+                                    <td class="stock-good">95 tablets</td>
+                                    <td>2026-01-28</td>
+                                    <td>30 tablets</td>
+                                    <td>Main Clinic - Cabinet A</td>
+                                    <td>Allergy</td>
+                                </tr>
+                                <tr>
+                                    <td>Ciprofloxacin 500mg</td>
+                                    <td class="stock-low">12 tablets</td>
+                                    <td>2025-11-30</td>
+                                    <td>40 tablets</td>
+                                    <td>Main Clinic - Refrigerator</td>
+                                    <td>Antibiotics</td>
+                                </tr>
+                                <tr>
+                                    <td>Omeprazole 20mg</td>
+                                    <td class="stock-good">80 capsules</td>
+                                    <td>2026-04-15</td>
+                                    <td>30 capsules</td>
+                                    <td>Main Clinic - Cabinet C</td>
+                                    <td>Gastric</td>
+                                </tr>
+                                <tr>
+                                    <td>Nitroglycerin Spray</td>
+                                    <td class="stock-medium">4 bottles</td>
+                                    <td>2026-02-20</td>
+                                    <td>3 bottles</td>
+                                    <td>Emergency Kit</td>
+                                    <td>Cardiac</td>
+                                </tr>
+                                <tr>
+                                    <td>Antiemetic Tablets</td>
+                                    <td class="stock-good">120 tablets</td>
+                                    <td>2026-07-05</td>
+                                    <td>50 tablets</td>
+                                    <td>Main Clinic - Cabinet B</td>
+                                    <td>Anti-nausea</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
+            </footer>
+        </div>
+    </div>
+</body>
+</html>
