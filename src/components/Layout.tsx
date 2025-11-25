@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import logoImage from "figma:asset/fb3c133bf816d7e8d936161233eabb782dc741e6.png";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,8 +23,15 @@ export function Layout({ children }: LayoutProps) {
       {/* Header */}
       <header className="border-b-2 border-black p-4">
         <div className="flex justify-between items-center">
-          <div className="border-2 border-black px-4 py-2">
-            <span>MarMed Onboard Clinic</span>
+          <div className="flex items-center gap-4">
+            <img 
+              src={logoImage} 
+              alt="Maritime Medical Onboard Health Logo" 
+              className="h-16 w-16"
+            />
+            <div className="border-2 border-black px-4 py-2">
+              <span>MarMed Onboard Clinic</span>
+            </div>
           </div>
           <div className="flex gap-4">
             <Link to="#" className="underline">User Profile</Link>
