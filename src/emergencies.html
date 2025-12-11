@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container-wrapper">
         <div class="main-card">
@@ -15,7 +17,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     <div class="logo-title-section">
                         <div class="logo-box">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23003d82'/%3E%3Cpath d='M50 20 L50 80 M20 50 L80 50' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%2300a3e0'/%3E%3C/svg%3E" alt="MarMed Logo">
+                            <img src="assets/Marmed.png" alt="MarMed Logo">
                         </div>
                         <div class="title-box">
                             MarMed Onboard Clinic
@@ -53,53 +55,66 @@
                         <div class="form-title">
                             <span>🚨</span> Log Emergency Case
                         </div>
-                        
+
                         <form>
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label">Incident Type</label>
-                                    <select class="form-input" required>
-                                        <option value="">Select type...</option>
-                                        <option>Cardiac Event</option>
-                                        <option>Severe Injury</option>
-                                        <option>Acute Illness</option>
-                                        <option>Burns</option>
-                                        <option>Fracture</option>
-                                        <option>Other Emergency</option>
-                                    </select>
+                                    <div class="custom-select-wrapper" id="incident-type-select">
+                                        <div class="custom-select-trigger">
+                                            <span>Select type...</span>
+                                            <div class="arrow">▼</div>
+                                        </div>
+                                        <div class="custom-options">
+                                            <span class="custom-option selected" data-value="">Select type...</span>
+                                            <span class="custom-option" data-value="Cardiac Event">Cardiac Event</span>
+                                            <span class="custom-option" data-value="Severe Injury">Severe Injury</span>
+                                            <span class="custom-option" data-value="Acute Illness">Acute Illness</span>
+                                            <span class="custom-option" data-value="Burns">Burns</span>
+                                            <span class="custom-option" data-value="Fracture">Fracture</span>
+                                            <span class="custom-option" data-value="Other Emergency">Other
+                                                Emergency</span>
+                                        </div>
+                                        <input type="hidden" class="form-input" required>
+                                    </div>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="form-label">Date & Time</label>
                                     <input type="datetime-local" class="form-input" required>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="form-label">Crew Name</label>
                                     <input type="text" class="form-input" placeholder="Enter crew member name" required>
                                 </div>
-                                
+
                                 <div class="form-group">
                                     <label class="form-label">Location / Vessel Section</label>
-                                    <input type="text" class="form-input" placeholder="e.g., Engine Room, Deck" required>
+                                    <input type="text" class="form-input" placeholder="e.g., Engine Room, Deck"
+                                        required>
                                 </div>
-                                
+
                                 <div class="form-group full-width">
                                     <label class="form-label">Treatment Given</label>
-                                    <textarea class="form-input" placeholder="Detailed description of immediate care provided..." required></textarea>
+                                    <textarea class="form-input"
+                                        placeholder="Detailed description of immediate care provided..."
+                                        required></textarea>
                                 </div>
-                                
+
                                 <div class="form-group full-width">
                                     <label class="form-label">Evacuation Details</label>
-                                    <textarea class="form-input" placeholder="If medical evacuation was required, provide details..."></textarea>
+                                    <textarea class="form-input"
+                                        placeholder="If medical evacuation was required, provide details..."></textarea>
                                 </div>
-                                
+
                                 <div class="form-group full-width">
                                     <label class="form-label">Outcome / Follow-up</label>
-                                    <textarea class="form-input" placeholder="Patient status, ongoing care requirements..."></textarea>
+                                    <textarea class="form-input"
+                                        placeholder="Patient status, ongoing care requirements..."></textarea>
                                 </div>
                             </div>
-                            
+
                             <button type="submit" class="submit-btn">🚨 Log Emergency Case</button>
                         </form>
                     </div>
@@ -107,7 +122,8 @@
                     <!-- Past Emergencies Section -->
                     <div class="section-divider">
                         <h2 class="section-title">Past Emergency Cases</h2>
-                        <button class="pdf-btn" onclick="alert('Generating PDF Report...')">📄 Generate Emergency Summary PDF</button>
+                        <button class="pdf-btn" onclick="alert('Generating PDF Report...')">📄 Generate Emergency
+                            Summary PDF</button>
                     </div>
 
                     <!-- Past Emergencies Table -->
@@ -160,9 +176,11 @@
 
             <!-- Footer -->
             <footer class="footer">
-                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
+                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a
+                        href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
             </footer>
         </div>
     </div>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container-wrapper">
         <div class="main-card">
@@ -15,7 +17,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     <div class="logo-title-section">
                         <div class="logo-box">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23003d82'/%3E%3Cpath d='M50 20 L50 80 M20 50 L80 50' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%2300a3e0'/%3E%3C/svg%3E" alt="MarMed Logo">
+                            <img src="assets/Marmed.png" alt="MarMed Logo">
                         </div>
                         <div class="title-box">
                             MarMed Onboard Clinic
@@ -51,25 +53,53 @@
                     <!-- Controls Row -->
                     <div class="controls-row">
                         <div class="filters">
-                            <select class="filter-input">
-                                <option>All Stock Levels</option>
-                                <option>Critical (Below 10)</option>
-                                <option>Low (10-25)</option>
-                                <option>Good (Above 25)</option>
-                            </select>
-                            <select class="filter-input">
-                                <option>All Expiry Dates</option>
-                                <option>Expired</option>
-                                <option>Expiring Soon (30 days)</option>
-                                <option>Valid</option>
-                            </select>
-                            <select class="filter-input">
-                                <option>All Categories</option>
-                                <option>Analgesics</option>
-                                <option>Antibiotics</option>
-                                <option>Cardiac</option>
-                                <option>Emergency</option>
-                            </select>
+                            <div class="custom-select-wrapper" style="width: 200px;">
+                                <div class="custom-select-trigger">
+                                    <span>All Stock Levels</span>
+                                    <div class="arrow">▼</div>
+                                </div>
+                                <div class="custom-options">
+                                    <span class="custom-option selected" data-value="All Stock Levels">All Stock
+                                        Levels</span>
+                                    <span class="custom-option" data-value="Critical (Below 10)">Critical (Below
+                                        10)</span>
+                                    <span class="custom-option" data-value="Low (10-25)">Low (10-25)</span>
+                                    <span class="custom-option" data-value="Good (Above 25)">Good (Above 25)</span>
+                                </div>
+                                <input type="hidden" class="filter-input" value="All Stock Levels">
+                            </div>
+
+                            <div class="custom-select-wrapper" style="width: 200px;">
+                                <div class="custom-select-trigger">
+                                    <span>All Expiry Dates</span>
+                                    <div class="arrow">▼</div>
+                                </div>
+                                <div class="custom-options">
+                                    <span class="custom-option selected" data-value="All Expiry Dates">All Expiry
+                                        Dates</span>
+                                    <span class="custom-option" data-value="Expired">Expired</span>
+                                    <span class="custom-option" data-value="Expiring Soon (30 days)">Expiring Soon (30
+                                        days)</span>
+                                    <span class="custom-option" data-value="Valid">Valid</span>
+                                </div>
+                                <input type="hidden" class="filter-input" value="All Expiry Dates">
+                            </div>
+
+                            <div class="custom-select-wrapper" style="width: 200px;">
+                                <div class="custom-select-trigger">
+                                    <span>All Categories</span>
+                                    <div class="arrow">▼</div>
+                                </div>
+                                <div class="custom-options">
+                                    <span class="custom-option selected" data-value="All Categories">All
+                                        Categories</span>
+                                    <span class="custom-option" data-value="Analgesics">Analgesics</span>
+                                    <span class="custom-option" data-value="Antibiotics">Antibiotics</span>
+                                    <span class="custom-option" data-value="Cardiac">Cardiac</span>
+                                    <span class="custom-option" data-value="Emergency">Emergency</span>
+                                </div>
+                                <input type="hidden" class="filter-input" value="All Categories">
+                            </div>
                         </div>
                         <button class="add-btn">+ Add New Medicine</button>
                     </div>
@@ -177,9 +207,12 @@
 
             <!-- Footer -->
             <footer class="footer">
-                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
+                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a
+                        href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
             </footer>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="container-wrapper">
         <div class="main-card">
@@ -15,7 +17,7 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
                     <div class="logo-title-section">
                         <div class="logo-box">
-                            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23003d82'/%3E%3Cpath d='M50 20 L50 80 M20 50 L80 50' stroke='white' stroke-width='8' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='12' fill='%2300a3e0'/%3E%3C/svg%3E" alt="MarMed Logo">
+                            <img src="assets/Marmed.png" alt="MarMed Logo">
                         </div>
                         <div class="title-box">
                             MarMed Onboard Clinic
@@ -51,14 +53,21 @@
                     <!-- Filters -->
                     <div class="filters-row">
                         <input type="text" class="filter-input" placeholder="📅 Select Date Range">
-                        <select class="filter-input">
-                            <option>All Voyages</option>
-                            <option>Current Voyage</option>
-                            <option>Last Voyage</option>
-                            <option>Last 3 Months</option>
-                            <option>Last 6 Months</option>
-                            <option>Year to Date</option>
-                        </select>
+                        <div class="custom-select-wrapper" style="width: 200px;">
+                            <div class="custom-select-trigger">
+                                <span>All Voyages</span>
+                                <div class="arrow">▼</div>
+                            </div>
+                            <div class="custom-options">
+                                <span class="custom-option selected" data-value="All Voyages">All Voyages</span>
+                                <span class="custom-option" data-value="Current Voyage">Current Voyage</span>
+                                <span class="custom-option" data-value="Last Voyage">Last Voyage</span>
+                                <span class="custom-option" data-value="Last 3 Months">Last 3 Months</span>
+                                <span class="custom-option" data-value="Last 6 Months">Last 6 Months</span>
+                                <span class="custom-option" data-value="Year to Date">Year to Date</span>
+                            </div>
+                            <input type="hidden" class="filter-input" value="All Voyages">
+                        </div>
                     </div>
 
                     <!-- Charts Grid -->
@@ -138,9 +147,12 @@
 
             <!-- Footer -->
             <footer class="footer">
-                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
+                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a
+                        href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
             </footer>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
+
 </html>
