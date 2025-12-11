@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergencies - MarMed Onboard Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" crossorigin href="/assets/styles-BrVdEgUI.css">
+</head>
+
+<body>
+    <div class="container-wrapper">
+        <div class="main-card">
+            <!-- Header -->
+            <header class="header-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div class="logo-title-section">
+                        <div class="logo-box">
+                            <img src="/assets/Marmed-Caav3Sm5.png" alt="MarMed Logo">
+                        </div>
+                        <div class="title-box">
+                            MarMed Onboard Clinic
+                        </div>
+                    </div>
+                    <div class="nav-links">
+                        <a href="#">User Profile</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- Sidebar Navigation -->
+                <aside class="sidebar">
+                    <nav>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="crew-records.html">Crew Records</a></li>
+                            <li><a href="visit-log.html">Visit Log</a></li>
+                            <li><a href="emergencies.html" class="active">Emergencies</a></li>
+                            <li><a href="medicine-inventory.html">Medicine Inventory</a></li>
+                            <li><a href="analytics.html">Analytics</a></li>
+                            <li><a href="settings.html">Settings</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <h1 class="page-title">Emergency Case Documentation</h1>
+
+                    <!-- Emergency Form -->
+                    <div class="emergency-form">
+                        <div class="form-title">
+                            <span>🚨</span> Log Emergency Case
+                        </div>
+
+                        <form>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label class="form-label">Incident Type</label>
+                                    <div class="custom-select-wrapper" id="incident-type-select">
+                                        <div class="custom-select-trigger">
+                                            <span>Select type...</span>
+                                            <div class="arrow">▼</div>
+                                        </div>
+                                        <div class="custom-options">
+                                            <span class="custom-option selected" data-value="">Select type...</span>
+                                            <span class="custom-option" data-value="Cardiac Event">Cardiac Event</span>
+                                            <span class="custom-option" data-value="Severe Injury">Severe Injury</span>
+                                            <span class="custom-option" data-value="Acute Illness">Acute Illness</span>
+                                            <span class="custom-option" data-value="Burns">Burns</span>
+                                            <span class="custom-option" data-value="Fracture">Fracture</span>
+                                            <span class="custom-option" data-value="Other Emergency">Other
+                                                Emergency</span>
+                                        </div>
+                                        <input type="hidden" class="form-input" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Date & Time</label>
+                                    <input type="datetime-local" class="form-input" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Crew Name</label>
+                                    <input type="text" class="form-input" placeholder="Enter crew member name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Location / Vessel Section</label>
+                                    <input type="text" class="form-input" placeholder="e.g., Engine Room, Deck"
+                                        required>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label class="form-label">Treatment Given</label>
+                                    <textarea class="form-input"
+                                        placeholder="Detailed description of immediate care provided..."
+                                        required></textarea>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label class="form-label">Evacuation Details</label>
+                                    <textarea class="form-input"
+                                        placeholder="If medical evacuation was required, provide details..."></textarea>
+                                </div>
+
+                                <div class="form-group full-width">
+                                    <label class="form-label">Outcome / Follow-up</label>
+                                    <textarea class="form-input"
+                                        placeholder="Patient status, ongoing care requirements..."></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="submit-btn">🚨 Log Emergency Case</button>
+                        </form>
+                    </div>
+
+                    <!-- Past Emergencies Section -->
+                    <div class="section-divider">
+                        <h2 class="section-title">Past Emergency Cases</h2>
+                        <button class="pdf-btn" onclick="alert('Generating PDF Report...')">📄 Generate Emergency
+                            Summary PDF</button>
+                    </div>
+
+                    <!-- Past Emergencies Table -->
+                    <div class="table-container">
+                        <div class="table-header">Emergency Incident History</div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Type</th>
+                                    <th>Crew</th>
+                                    <th>Location</th>
+                                    <th>Outcome</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>2025-11-15 14:30</td>
+                                    <td>Severe Injury</td>
+                                    <td>John Peterson</td>
+                                    <td>Engine Room</td>
+                                    <td>Stabilized, Evacuated</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-10-28 08:15</td>
+                                    <td>Cardiac Event</td>
+                                    <td>Robert Chen</td>
+                                    <td>Bridge</td>
+                                    <td>Recovered, Under Observation</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-10-10 22:45</td>
+                                    <td>Burns</td>
+                                    <td>Maria Santos</td>
+                                    <td>Galley</td>
+                                    <td>Treated Onboard, Recovered</td>
+                                </tr>
+                                <tr>
+                                    <td>2025-09-22 16:20</td>
+                                    <td>Fracture</td>
+                                    <td>David Kim</td>
+                                    <td>Deck</td>
+                                    <td>Stabilized, Evacuated</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a
+                        href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>

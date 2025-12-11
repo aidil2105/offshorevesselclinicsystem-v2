@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crew Records - MarMed Onboard Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" crossorigin href="/assets/styles-BrVdEgUI.css">
+</head>
+
+<body>
+    <div class="container-wrapper">
+        <div class="main-card">
+            <!-- Header -->
+            <header class="header-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div class="logo-title-section">
+                        <div class="logo-box">
+                            <img src="/assets/Marmed-Caav3Sm5.png" alt="MarMed Logo">
+                        </div>
+                        <div class="title-box">
+                            MarMed Onboard Clinic
+                        </div>
+                    </div>
+                    <div class="nav-links">
+                        <a href="#">User Profile</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- Sidebar Navigation -->
+                <aside class="sidebar">
+                    <nav>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="crew-records.html" class="active">Crew Records</a></li>
+                            <li><a href="visit-log.html">Visit Log</a></li>
+                            <li><a href="emergencies.html">Emergencies</a></li>
+                            <li><a href="medicine-inventory.html">Medicine Inventory</a></li>
+                            <li><a href="analytics.html">Analytics</a></li>
+                            <li><a href="settings.html">Settings</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <h1 class="page-title">Crew Medical Records</h1>
+
+                    <div class="content-grid">
+                        <!-- Left Column -->
+                        <div>
+                            <!-- Search Bar -->
+                            <input type="text" class="search-bar" placeholder="🔍 Search Crew by Name, Rank, or ID...">
+
+                            <!-- Table -->
+                            <div class="table-container">
+                                <div class="table-header">Crew Medical Records</div>
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Rank</th>
+                                            <th>Last Visit</th>
+                                            <th>Health Status</th>
+                                            <th>Vaccination</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>James Anderson</td>
+                                            <td>Captain</td>
+                                            <td>2025-11-20</td>
+                                            <td>✓ Fit for Duty</td>
+                                            <td>✓ Current</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Maria Santos</td>
+                                            <td>Chief Engineer</td>
+                                            <td>2025-11-18</td>
+                                            <td>✓ Fit for Duty</td>
+                                            <td>✓ Current</td>
+                                        </tr>
+                                        <tr>
+                                            <td>David Kim</td>
+                                            <td>First Mate</td>
+                                            <td>2025-11-15</td>
+                                            <td>⚠ Under Observation</td>
+                                            <td>✓ Current</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sarah Thompson</td>
+                                            <td>Second Engineer</td>
+                                            <td>2025-11-10</td>
+                                            <td>✓ Fit for Duty</td>
+                                            <td>⚠ Due Soon</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mohammed Ali</td>
+                                            <td>Deck Officer</td>
+                                            <td>2025-11-08</td>
+                                            <td>✓ Fit for Duty</td>
+                                            <td>✓ Current</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Elena Rodriguez</td>
+                                            <td>Cook</td>
+                                            <td>2025-11-05</td>
+                                            <td>✓ Fit for Duty</td>
+                                            <td>✓ Current</td>
+                                        </tr>
+                                        <tr>
+                                            <td>John Peterson</td>
+                                            <td>AB Seaman</td>
+                                            <td>2025-10-28</td>
+                                            <td>✓ Fit for Duty</td>
+                                            <td>✓ Current</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="profile-panel">
+                            <div class="panel-title">Crew Profile Panel</div>
+
+                            <button class="action-btn">Add Visit Record</button>
+                            <button class="action-btn">Upload Report</button>
+                            <button class="action-btn">Print Summary</button>
+
+                            <div class="profile-sections">
+                                <div class="profile-section">📋 Personal Information</div>
+                                <div class="profile-section">🏥 Medical History</div>
+                                <div class="profile-section">💉 Vaccination Record</div>
+                                <div class="profile-section">✓ Fitness Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a
+                        href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>

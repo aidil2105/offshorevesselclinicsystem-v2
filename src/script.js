@@ -690,9 +690,54 @@ document.addEventListener('click', function (e) {
 
     // 3. Handle Click Outside
     // If we clicked anywhere else (not a trigger, not an option), close all dropdowns
+    // 3. Handle Click Outside
+    // If we clicked anywhere else (not a trigger, not an option), close all dropdowns
     if (!target.closest('.custom-select-wrapper')) {
         document.querySelectorAll('.custom-select-wrapper').forEach(w => {
             w.classList.remove('open');
         });
+    }
+});
+
+// ==========================================
+// Responsive Sidebar Logic
+// ==========================================
+
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('active');
+        overlay.classList.toggle('active');
+    }
+}
+
+function closeSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    const overlay = document.querySelector('.sidebar-overlay');
+    if (sidebar && overlay) {
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+    }
+}
+
+// Separate listener for Layout interactions
+document.addEventListener('click', function (e) {
+    // Hamburger Click
+    if (e.target.closest('.hamburger-btn')) {
+        toggleSidebar();
+        e.stopPropagation();
+        return;
+    }
+
+    // Overlay Click
+    if (e.target.closest('.sidebar-overlay')) {
+        closeSidebar();
+        return;
+    }
+
+    // Nav Link Click (Close sidebar if mobile)
+    if (window.innerWidth <= 768 && e.target.closest('.sidebar a')) {
+        closeSidebar();
     }
 });

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MarMed Onboard Clinic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" crossorigin href="/assets/styles-BrVdEgUI.css">
+</head>
+
+<body>
+    <div class="container-wrapper">
+        <div class="main-card">
+            <!-- Header -->
+            <header class="header-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div class="logo-title-section">
+                        <div class="logo-box">
+                            <img src="/assets/Marmed-Caav3Sm5.png" alt="MarMed Logo">
+                        </div>
+                        <div class="title-box">
+                            MarMed Onboard Clinic
+                        </div>
+                    </div>
+                    <div class="nav-links">
+                        <a href="#">User Profile</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <!-- Sidebar Navigation -->
+                <aside class="sidebar">
+                    <nav>
+                        <ul>
+                            <li><a href="index.html" class="active">Home</a></li>
+                            <li><a href="crew-records.html">Crew Records</a></li>
+                            <li><a href="visit-log.html">Visit Log</a></li>
+                            <li><a href="emergencies.html">Emergencies</a></li>
+                            <li><a href="medicine-inventory.html">Medicine Inventory</a></li>
+                            <li><a href="analytics.html">Analytics</a></li>
+                            <li><a href="settings.html">Settings</a></li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="main-content">
+                    <h1 class="page-title">Dashboard</h1>
+
+                    <!-- Statistics Row -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">Patients Today</div>
+                            <div class="stat-value">12</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Ongoing Treatments</div>
+                            <div class="stat-value">5</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Crew Under Observation</div>
+                            <div class="stat-value">3</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">Medicine Stock Alerts</div>
+                            <div class="stat-value">7</div>
+                        </div>
+                    </div>
+
+                    <!-- Chart and Quick Actions -->
+                    <div class="chart-actions-grid">
+                        <div class="chart-box">
+                            <div class="chart-title">7-Day Visit Trend</div>
+                            <div class="chart-placeholder">
+                                📈 Line Chart Visualization
+                            </div>
+                        </div>
+
+                        <div class="actions-box">
+                            <div class="actions-title">Quick Actions</div>
+                            <button class="action-btn" onclick="window.location.href='visit-log.html'">
+                                Add New Visit
+                            </button>
+                            <button class="action-btn" onclick="window.location.href='emergencies.html'">
+                                Log Emergency Case
+                            </button>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p>© 2025 MarMed Onboard Clinic – For Authorized Medical Use Only | Contact: <a
+                        href="mailto:support@marmed.com">support@marmed.com</a> | Maritime Health Portal</p>
+            </footer>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
