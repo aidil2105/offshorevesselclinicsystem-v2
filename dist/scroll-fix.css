@@ -1,0 +1,18 @@
+/* Scroll fix overrides for built `dist/` pages. */
+
+.main-card,
+.content-wrapper,
+.main-content {
+  min-height: 0;
+}
+
+.main-content {
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 1024px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
