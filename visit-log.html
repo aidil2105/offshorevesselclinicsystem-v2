@@ -184,33 +184,33 @@
                 <form id="visitForm">
                     <div class="form-group">
                         <label class="form-label">Crew Name</label>
-                        <input type="text" class="form-input" placeholder="Enter crew member name" required>
+                        <input type="text" name="crewName" class="form-input" placeholder="Enter crew member name" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Chief Complaint</label>
-                        <textarea class="form-input" placeholder="Describe symptoms..." required></textarea>
+                        <textarea name="complaint" class="form-input" placeholder="Describe symptoms..." required></textarea>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Diagnosis</label>
-                        <input type="text" class="form-input" placeholder="Medical diagnosis" required>
+                        <input type="text" name="diagnosis" class="form-input" placeholder="Medical diagnosis" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Treatment Given</label>
-                        <textarea class="form-input" placeholder="Treatment details..." required></textarea>
+                        <textarea name="treatment" class="form-input" placeholder="Treatment details..." required></textarea>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Remarks / Additional Notes</label>
-                        <textarea class="form-input" placeholder="Additional notes..."></textarea>
+                        <textarea name="remarks" class="form-input" placeholder="Additional notes..."></textarea>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Attach Files (Lab Results, Prescriptions)</label>
-                        <input type="file" class="form-input" multiple>
+                        <input type="file" name="files" class="form-input" multiple>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-                <button class="btn-save" onclick="saveVisit()">Save Visit</button>
+                <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                <button type="button" class="btn-save" onclick="saveVisit()">Save Visit</button>
             </div>
         </div>
     </div>
