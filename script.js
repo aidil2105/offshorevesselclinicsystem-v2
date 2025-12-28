@@ -928,8 +928,13 @@ function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     const overlay = document.querySelector('.sidebar-overlay');
     if (sidebar && overlay) {
+        const isActive = sidebar.classList.contains('active');
         sidebar.classList.toggle('active');
         overlay.classList.toggle('active');
+        // Prevent body scroll when sidebar is open on mobile
+        if (window.innerWidth <= 768) {
+            document.body.style.overflow = isActive ? '' : 'hidden';
+        }
     }
 }
 
@@ -939,6 +944,8 @@ function closeSidebar() {
     if (sidebar && overlay) {
         sidebar.classList.remove('active');
         overlay.classList.remove('active');
+        // Restore body scroll
+        document.body.style.overflow = '';
     }
 }
 
@@ -1001,6 +1008,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Keyboard shortcuts
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
+            // Close sidebar if open on mobile
+            if (window.innerWidth <= 768) {
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar && sidebar.classList.contains('active')) {
+                    closeSidebar();
+                    return;
+                }
+            }
+            // Close modals
             document.querySelectorAll('.modal').forEach(modal => {
                 if (modal.style.display === 'block') modal.style.display = 'none';
             });
@@ -1024,11 +1040,22 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.target.closest('.hamburger-btn')) {
             toggleSidebar();
             e.stopPropagation();
-        } else if (e.target.closest('.sidebar-overlay')) {
+        } else if (e.target.closest('.sidebar-close') || e.target.closest('.sidebar-overlay')) {
             closeSidebar();
         } else if (window.innerWidth <= 768 && e.target.closest('.sidebar a')) {
             closeSidebar();
         }
+    });
+    
+    // Handle window resize - close sidebar and restore scroll on desktop
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            if (window.innerWidth > 768) {
+                closeSidebar();
+            }
+        }, 250);
     });
     
     // Modal close on outside click

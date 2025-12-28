@@ -1105,30 +1105,6 @@ textarea.form-input {
         grid-template-columns: 1fr;
     }
 
-    .content-wrapper {
-        flex-direction: column;
-    }
-
-    .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-        height: auto;
-        flex-shrink: 0;
-        overflow-y: visible;
-    }
-
-    .sidebar nav ul {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 0.5rem;
-    }
-
-    .sidebar nav ul li a:hover {
-        padding-left: 1.25rem;
-        /* Remove slide effect on mobile for better UX */
-    }
-
     .form-grid {
         grid-template-columns: 1fr;
     }
@@ -1140,9 +1116,10 @@ textarea.form-input {
     }
 
     .logo-title-section {
-        flex-direction: column;
-        text-align: center;
-        gap: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex: 1;
     }
 
     .title-box {
@@ -1152,9 +1129,7 @@ textarea.form-input {
     }
 
     .nav-links {
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-top: 1rem;
+        display: none;
     }
 
     .main-content {
@@ -1343,14 +1318,45 @@ textarea.form-input {
     background: transparent;
     border: none;
     color: var(--text-header);
+    font-size: 1.75rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+}
+
+.hamburger-btn:hover,
+.hamburger-btn:active {
+    background: var(--primary-light);
+    color: var(--primary);
+}
+
+.hamburger-btn i {
+    display: block;
+}
+
+/* Sidebar Close Button */
+.sidebar-close {
+    display: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
     font-size: 1.5rem;
     cursor: pointer;
     padding: 0.5rem;
     border-radius: var(--radius-sm);
-    transition: background 0.2s;
+    transition: all 0.2s ease;
+    z-index: 1001;
 }
 
-.hamburger-btn:hover {
+.sidebar-close:hover {
     background: var(--primary-light);
     color: var(--primary);
 }
@@ -1368,48 +1374,89 @@ textarea.form-input {
         position: sticky;
         top: 0;
         z-index: 50;
-        /* Above everything */
+        background: var(--bg-surface);
+        box-shadow: var(--shadow-sm);
     }
 
     .logo-title-section {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
         flex: 1;
+    }
+
+    .logo-box {
+        width: 40px;
+        height: 40px;
+    }
+
+    .logo-box img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .title-box {
+        font-size: 0.95rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .nav-links {
         display: none;
-        /* Hide header links on mobile */
     }
 
     .hamburger-btn {
-        display: block;
-        /* Show hamburger on mobile */
-        margin-right: 1rem;
+        display: flex;
+        flex-shrink: 0;
     }
 
     .content-wrapper {
         display: block;
-        /* Stack sidebar and main content */
         position: relative;
     }
 
-    /* Sidebar - Hidden by default */
+    /* Sidebar - Hidden by default on mobile */
     .sidebar {
         position: fixed;
         top: 0;
         left: 0;
         height: 100vh;
+        width: 280px;
+        max-width: 85vw;
         z-index: 1000;
         transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: var(--shadow-lg);
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
         background: var(--bg-surface);
-        width: 280px;
-        /* Slightly wider for touch */
+        padding: 1.5rem 1rem;
+        padding-top: 3.5rem;
+        overflow-y: auto;
+        border-right: 1px solid var(--border-color);
     }
 
     .sidebar.active {
         transform: translateX(0);
-        /* Slide in */
+    }
+
+    .sidebar nav ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        list-style: none;
+    }
+
+    .sidebar nav ul li a {
+        padding: 1rem 1.25rem;
+        border-radius: var(--radius-md);
+    }
+
+    .sidebar nav ul li a:hover {
+        padding-left: 1.5rem;
+    }
+
+    .sidebar-close {
+        display: block;
     }
 
     /* Overlay */
@@ -1419,35 +1466,34 @@ textarea.form-input {
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(15, 23, 42, 0.5);
-        /* Dark overlay */
-        backdrop-filter: blur(2px);
+        background: rgba(15, 23, 42, 0.6);
+        backdrop-filter: blur(4px);
         z-index: 999;
         opacity: 0;
         visibility: hidden;
         transition: all 0.3s ease;
+        pointer-events: none;
     }
 
     .sidebar-overlay.active {
         opacity: 1;
         visibility: visible;
+        pointer-events: all;
     }
 
     /* Main Content Adjustments */
     .main-content {
         padding: 1.5rem 1rem;
+        width: 100%;
         height: auto;
-        /* Let it grow */
     }
 
     .stats-grid {
         grid-template-columns: 1fr;
-        /* Stack cards */
     }
 
     .chart-actions-grid {
         grid-template-columns: 1fr;
-        /* Stack charts and actions */
     }
 
     .controls-row {
@@ -1463,6 +1509,25 @@ textarea.form-input {
 
     .custom-select-wrapper {
         width: 100% !important;
-        /* Full width dropdowns */
+    }
+
+    .footer {
+        padding: 1.5rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* Tablet Styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hamburger-btn {
+        display: none;
+    }
+
+    .sidebar {
+        width: 250px;
+    }
+
+    .main-content {
+        padding: 2rem 1.5rem;
     }
 }
