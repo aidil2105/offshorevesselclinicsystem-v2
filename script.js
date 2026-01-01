@@ -274,17 +274,33 @@ function loadDashboard() {
             last7Days.push({ date: dateStr, count });
         }
         chartPlaceholder.innerHTML = `
-            <div style="padding: 20px;">
-                <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 200px;">
-                    ${last7Days.map(day => `
-                        <div style="display: flex; flex-direction: column; align-items: center;">
-                            <div style="background: #3B82F6; width: 30px; height: ${day.count * 20}px; margin-bottom: 5px; border-radius: 4px 4px 0 0;"></div>
-                            <span style="font-size: 12px;">${day.count}</span>
-                            <span style="font-size: 10px; color: #666;">${day.date.split('-')[2]}</span>
+            <div style="padding: 20px; width: 100%; height: 100%; display: flex; flex-direction: column;">
+                <div style="flex: 1; display: flex; align-items: flex-end; justify-content: space-around; gap: 8px; min-height: 150px;">
+                    ${last7Days.map((day, idx) => {
+            const maxCount = Math.max(...last7Days.map(d => d.count), 1);
+            const barHeightPercent = day.count > 0 ? Math.max(15, (day.count / maxCount) * 100) : 8;
+            const isToday = idx === 6;
+            return `
+                        <div style="flex: 1; max-width: 50px; display: flex; flex-direction: column; align-items: center; height: 100%;">
+                            <span style="font-size: 0.9rem; font-weight: 700; color: ${isToday ? '#3B82F6' : '#1E3A8A'}; margin-bottom: 6px;">${day.count}</span>
+                            <div style="flex: 1; width: 100%; display: flex; align-items: flex-end;">
+                                <div style="width: 100%; height: ${barHeightPercent}%; min-height: 8px; background: linear-gradient(180deg, ${isToday ? '#3B82F6' : '#60A5FA'} 0%, ${isToday ? '#1D4ED8' : '#3B82F6'} 100%); border-radius: 6px 6px 0 0; box-shadow: 0 -2px 6px rgba(59, 130, 246, 0.2);"></div>
+                            </div>
                         </div>
-                    `).join('')}
+                    `;
+        }).join('')}
                 </div>
-                <div style="text-align: center; margin-top: 10px; color: #0059b3;">7-Day Visit Trend</div>
+                <div style="display: flex; justify-content: space-around; padding-top: 10px; border-top: 2px solid #E5E7EB; margin-top: 8px;">
+                    ${last7Days.map((day, idx) => {
+            const isToday = idx === 6;
+            return `
+                        <div style="flex: 1; max-width: 50px; text-align: center;">
+                            <div style="font-size: 0.75rem; font-weight: ${isToday ? '700' : '500'}; color: ${isToday ? '#3B82F6' : '#64748B'};">${day.date.split('-')[2]}</div>
+                        </div>
+                    `;
+        }).join('')}
+                </div>
+                <div style="text-align: center; margin-top: 12px; color: #1E3A8A; font-weight: 600; font-size: 0.85rem;">7-Day Visit Trend</div>
             </div>
         `;
     }
@@ -373,7 +389,9 @@ function loadAnalytics() {
             return `
                         <div style="flex: 1; max-width: 50px; display: flex; flex-direction: column; align-items: center; height: 100%;">
                             <span style="font-size: 0.9rem; font-weight: 700; color: ${isToday ? '#3B82F6' : '#1E3A8A'}; margin-bottom: 6px; flex-shrink: 0;">${w.count}</span>
-                            <div style="width: 100%; max-width: 40px; height: ${barHeightPercent}%; background: linear-gradient(180deg, ${isToday ? '#3B82F6' : '#60A5FA'} 0%, ${isToday ? '#1D4ED8' : '#3B82F6'} 100%); border-radius: 6px 6px 0 0; transition: height 0.6s ease-out; animation: barRise 0.6s ease-out; box-shadow: 0 -2px 8px ${isToday ? 'rgba(59, 130, 246, 0.4)' : 'rgba(59, 130, 246, 0.2)'};"></div>
+                            <div style="flex: 1; width: 100%; display: flex; align-items: flex-end;">
+                                <div style="width: 100%; height: ${barHeightPercent}%; min-height: 10px; background: linear-gradient(180deg, ${isToday ? '#3B82F6' : '#60A5FA'} 0%, ${isToday ? '#1D4ED8' : '#3B82F6'} 100%); border-radius: 6px 6px 0 0; box-shadow: 0 -2px 6px ${isToday ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.15)'};"></div>
+                            </div>
                         </div>
                     `;
         }).join('')}
