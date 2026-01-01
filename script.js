@@ -318,19 +318,20 @@ function loadAnalytics() {
         }
         const maxCount = Math.max(...sortedConditions.map(c => c[1]), 1);
 
+
         conditionsChart.innerHTML = `
-            <div style="padding: 20px; width: 100%;">
+            <div style="padding: 24px; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center;">
                 ${sortedConditions.map(([condition, count], idx) => {
             const barWidth = count > 0 ? Math.max(20, (count / maxCount) * 100) : 0;
             const color = chartColors[idx % chartColors.length];
             return `
-                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
-                        <span style="flex: 0 0 100px; font-size: 0.9rem; color: var(--text-main); font-weight: 500;">${condition}</span>
+                    <div style="display: flex; align-items: center; margin-bottom: 18px;">
+                        <span style="flex: 0 0 90px; font-size: 0.9rem; color: #1E3A8A; font-weight: 600;">${condition}</span>
                         <div style="flex: 1; display: flex; align-items: center; gap: 12px;">
-                            <div style="flex: 1; height: 24px; background: #E5E7EB; border-radius: 6px; overflow: hidden; position: relative;">
-                                <div style="width: ${barWidth}%; height: 100%; background: linear-gradient(90deg, ${color}, ${color}dd); border-radius: 6px; transition: width 0.8s ease-out; animation: barGrow 0.8s ease-out;"></div>
+                            <div style="flex: 1; height: 28px; background: #E5E7EB; border-radius: 8px; overflow: hidden;">
+                                <div style="width: ${barWidth}%; height: 100%; background: linear-gradient(90deg, ${color}, ${color}cc); border-radius: 8px; animation: barGrow 0.8s ease-out;"></div>
                             </div>
-                            <span style="flex: 0 0 30px; font-weight: 700; color: ${color}; font-size: 1.1rem;">${count}</span>
+                            <span style="flex: 0 0 35px; font-weight: 700; color: ${color}; font-size: 1.2rem; text-align: right;">${count}</span>
                         </div>
                     </div>
                 `;
@@ -367,12 +368,12 @@ function loadAnalytics() {
             <div style="padding: 20px; width: 100%; height: 100%; display: flex; flex-direction: column;">
                 <div style="flex: 1; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding-bottom: 10px; border-bottom: 2px solid #E5E7EB;">
                     ${weekData.map((w, idx) => {
-            const barHeight = w.count > 0 ? Math.max(20, (w.count / maxCount) * chartHeight) : 8;
+            const barHeightPercent = w.count > 0 ? Math.max(15, (w.count / maxCount) * 100) : 10;
             const isToday = idx === 6;
             return `
-                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;">
-                            <span style="font-size: 0.85rem; font-weight: 700; color: ${isToday ? '#3B82F6' : 'var(--text-main)'};">${w.count}</span>
-                            <div style="width: 100%; max-width: 40px; height: ${barHeight}px; background: linear-gradient(180deg, ${isToday ? '#3B82F6' : '#60A5FA'} 0%, ${isToday ? '#1D4ED8' : '#3B82F6'} 100%); border-radius: 6px 6px 0 0; transition: height 0.6s ease-out; animation: barRise 0.6s ease-out; box-shadow: 0 -2px 8px ${isToday ? 'rgba(59, 130, 246, 0.4)' : 'rgba(59, 130, 246, 0.2)'};"></div>
+                        <div style="flex: 1; max-width: 50px; display: flex; flex-direction: column; align-items: center; height: 100%;">
+                            <span style="font-size: 0.9rem; font-weight: 700; color: ${isToday ? '#3B82F6' : '#1E3A8A'}; margin-bottom: 6px; flex-shrink: 0;">${w.count}</span>
+                            <div style="width: 100%; max-width: 40px; height: ${barHeightPercent}%; background: linear-gradient(180deg, ${isToday ? '#3B82F6' : '#60A5FA'} 0%, ${isToday ? '#1D4ED8' : '#3B82F6'} 100%); border-radius: 6px 6px 0 0; transition: height 0.6s ease-out; animation: barRise 0.6s ease-out; box-shadow: 0 -2px 8px ${isToday ? 'rgba(59, 130, 246, 0.4)' : 'rgba(59, 130, 246, 0.2)'};"></div>
                         </div>
                     `;
         }).join('')}
@@ -427,7 +428,7 @@ function loadAnalytics() {
         });
 
         medicineChart.innerHTML = `
-            <div style="padding: 15px; width: 100%; display: flex; gap: 20px; align-items: center;">
+            <div style="padding: 20px; width: 100%; height: 100%; display: flex; gap: 24px; align-items: center; justify-content: center;">
                 <div style="flex: 0 0 auto; position: relative;">
                     <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform: rotate(-90deg);">
                         <circle cx="${size / 2}" cy="${size / 2}" r="${radius}" fill="none" stroke="#E5E7EB" stroke-width="${strokeWidth}"/>
@@ -527,7 +528,7 @@ function loadAnalytics() {
                 </div>
                 
                 <!-- Legend -->
-                <div style="display: flex; justify-content: center; gap: 16px; margin-top: 12px; flex-wrap: wrap;">
+                <div style="display: flex; justify-content: center; gap: 14px; margin-top: 8px; flex-wrap: wrap; flex-shrink: 0;">
                     <div style="display: flex; align-items: center; gap: 5px;">
                         <span style="width: 10px; height: 10px; background: #10B981; border-radius: 50%;"></span>
                         <span style="font-size: 0.7rem; color: var(--text-muted);">No Incidents</span>
@@ -543,7 +544,7 @@ function loadAnalytics() {
                 </div>
                 
                 <!-- Stats Summary -->
-                <div style="display: flex; justify-content: center; gap: 24px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #E5E7EB;">
+                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 6px; padding-top: 6px; border-top: 1px solid #E5E7EB; flex-shrink: 0;">
                     <div style="text-align: center;">
                         <div style="font-size: 1.25rem; font-weight: 700; color: #3B82F6;">${totalIncidents}</div>
                         <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Total Incidents</div>
