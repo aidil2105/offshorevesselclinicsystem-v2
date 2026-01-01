@@ -30,12 +30,12 @@ const utils = {
         const d = new Date(date);
         return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     },
-    
+
     formatDateTime: (date) => {
         const d = new Date(date);
         return `${utils.formatDate(d)} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
     },
-    
+
     save: (key, data) => {
         try {
             localStorage.setItem(key, JSON.stringify(data));
@@ -45,7 +45,7 @@ const utils = {
             return false;
         }
     },
-    
+
     load: (key) => {
         try {
             const data = localStorage.getItem(key);
@@ -55,7 +55,7 @@ const utils = {
             return null;
         }
     },
-    
+
     remove: (key) => {
         try {
             localStorage.removeItem(key);
@@ -65,7 +65,7 @@ const utils = {
             return false;
         }
     },
-    
+
     showNotification: (message, type = 'success') => {
         const notification = document.createElement('div');
         notification.className = `notification notification-${type}`;
@@ -82,7 +82,7 @@ const utils = {
             setTimeout(() => document.body.removeChild(notification), 300);
         }, 3000);
     },
-    
+
     searchTable: (input, table) => {
         if (!input || !table) return;
         const filter = input.value.toUpperCase();
@@ -162,7 +162,7 @@ function initializeData() {
             medicalLicense: 'ML-2025-456789'
         }
     };
-    
+
     Object.keys(defaults).forEach(key => {
         if (!utils.load(key)) utils.save(key, defaults[key]);
     });
@@ -175,7 +175,7 @@ function initializeData() {
 function loadTable(data, columns, tbodySelector = '.data-table tbody', options = {}) {
     const tbody = document.querySelector(tbodySelector);
     if (!tbody) return;
-    
+
     tbody.innerHTML = '';
     data.forEach((item, idx) => {
         const row = document.createElement('tr');
@@ -247,7 +247,7 @@ function loadDashboard() {
     const emergencies = utils.load(STORAGE_KEYS.EMERGENCIES) || [];
     const medicines = utils.load(STORAGE_KEYS.MEDICINES) || [];
     const crew = utils.load(STORAGE_KEYS.CREW) || [];
-    
+
     const today = utils.formatDate(new Date());
     const stats = {
         todayVisits: visits.filter(v => v.date === today).length,
@@ -255,14 +255,14 @@ function loadDashboard() {
         underObservation: crew.filter(c => c.healthStatus === 'Under Observation').length,
         lowStockMedicines: medicines.filter(m => m.stock < m.reorderLevel).length
     };
-    
+
     document.querySelectorAll('.stat-value').forEach((el, idx) => {
         if (idx === 0) el.textContent = stats.todayVisits;
         else if (idx === 1) el.textContent = stats.ongoingTreatments;
         else if (idx === 2) el.textContent = stats.underObservation;
         else if (idx === 3) el.textContent = stats.lowStockMedicines;
     });
-    
+
     const chartPlaceholder = document.querySelector('.chart-placeholder');
     if (chartPlaceholder) {
         const last7Days = [];
@@ -293,72 +293,110 @@ function loadDashboard() {
 function loadAnalytics() {
     const visits = utils.load(STORAGE_KEYS.VISITS) || [];
     const medicines = utils.load(STORAGE_KEYS.MEDICINES) || [];
-    
-    // Common Conditions
+    const emergencies = utils.load(STORAGE_KEYS.EMERGENCIES) || [];
+
+    // Color palette for charts
+    const chartColors = [
+        '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6',
+        '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1'
+    ];
+
+    // ========================================
+    // Chart 1: Common Conditions (Horizontal Bar Chart)
+    // ========================================
     const conditions = {};
     visits.forEach(v => {
         const condition = v.condition || 'Other';
         conditions[condition] = (conditions[condition] || 0) + 1;
     });
-    
+
     const conditionsChart = document.querySelector('.chart-card:first-child .chart-placeholder');
     if (conditionsChart) {
-        const sortedConditions = Object.entries(conditions).sort((a, b) => b[1] - a[1]).slice(0, 5);
-        if (sortedConditions.length === 0) sortedConditions.push(['Illness', 3], ['Injury', 3], ['Check-up1', 1]);
+        let sortedConditions = Object.entries(conditions).sort((a, b) => b[1] - a[1]).slice(0, 5);
+        if (sortedConditions.length === 0) {
+            sortedConditions = [['Illness', 3], ['Injury', 3], ['Check-up', 1]];
+        }
         const maxCount = Math.max(...sortedConditions.map(c => c[1]), 1);
+
         conditionsChart.innerHTML = `
             <div style="padding: 20px; width: 100%;">
-                ${sortedConditions.map(([condition, count]) => {
-                    const barWidth = count > 0 ? Math.max(30, (count / maxCount) * 100) : 0;
-                    return `
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px;">
-                        <span style="font-size: 1rem; color: var(--text-main);">${condition}</span>
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <span style="font-weight: 600; color: var(--text-main);">${count}</span>
-                            <div style="width: 60px; height: 8px; background: #E5E7EB; border-radius: 4px; position: relative; overflow: hidden; flex-shrink: 0;">
-                                <div style="width: ${barWidth}%; height: 100%; background: #3B82F6; border-radius: 4px;"></div>
+                ${sortedConditions.map(([condition, count], idx) => {
+            const barWidth = count > 0 ? Math.max(20, (count / maxCount) * 100) : 0;
+            const color = chartColors[idx % chartColors.length];
+            return `
+                    <div style="display: flex; align-items: center; margin-bottom: 16px;">
+                        <span style="flex: 0 0 100px; font-size: 0.9rem; color: var(--text-main); font-weight: 500;">${condition}</span>
+                        <div style="flex: 1; display: flex; align-items: center; gap: 12px;">
+                            <div style="flex: 1; height: 24px; background: #E5E7EB; border-radius: 6px; overflow: hidden; position: relative;">
+                                <div style="width: ${barWidth}%; height: 100%; background: linear-gradient(90deg, ${color}, ${color}dd); border-radius: 6px; transition: width 0.8s ease-out; animation: barGrow 0.8s ease-out;"></div>
                             </div>
+                            <span style="flex: 0 0 30px; font-weight: 700; color: ${color}; font-size: 1.1rem;">${count}</span>
                         </div>
                     </div>
                 `;
-                }).join('')}
+        }).join('')}
             </div>
+            <style>
+                @keyframes barGrow { from { width: 0%; } }
+            </style>
         `;
     }
-    
-    // Weekly Visits
+
+    // ========================================
+    // Chart 2: Weekly Visits (Vertical Bar Chart with Gradient)
+    // ========================================
     const weeklyChart = document.querySelectorAll('.chart-card')[1]?.querySelector('.chart-placeholder');
     if (weeklyChart) {
         const now = new Date();
-        const startOfYear = new Date(now.getFullYear(), 0, 1);
-        const pastDaysOfYear = (now - startOfYear) / 86400000;
-        const currentWeek = Math.ceil((pastDaysOfYear + startOfYear.getDay() + 1) / 7);
         const weekData = [];
+
+        // Get last 7 days data
         for (let i = 6; i >= 0; i--) {
-            const weekNum = currentWeek - i;
-            const weekStart = new Date(startOfYear);
-            weekStart.setDate(startOfYear.getDate() + (weekNum - 1) * 7 - startOfYear.getDay());
-            const weekEnd = new Date(weekStart);
-            weekEnd.setDate(weekStart.getDate() + 6);
-            const count = visits.filter(v => {
-                const visitDate = new Date(v.date);
-                return visitDate >= weekStart && visitDate <= weekEnd;
-            }).length;
-            weekData.push({ week: weekNum, count });
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            const dateStr = utils.formatDate(date);
+            const count = visits.filter(v => v.date === dateStr).length;
+            const dayName = date.toLocaleDateString('en-US', { weekday: 'short' });
+            weekData.push({ day: dayName, date: date.getDate(), count });
         }
+
+        const maxCount = Math.max(...weekData.map(w => w.count), 1);
+        const chartHeight = 140;
+
         weeklyChart.innerHTML = `
-            <div style="padding: 20px; width: 100%;">
-                <div style="display: flex; justify-content: space-around; align-items: flex-end; margin-bottom: 10px;">
-                    ${weekData.map(w => `<div style="display: flex; flex-direction: column; align-items: center;"><span style="font-size: 1.25rem; font-weight: 600; color: var(--text-main); margin-bottom: 8px;">${w.count}</span></div>`).join('')}
+            <div style="padding: 20px; width: 100%; height: 100%; display: flex; flex-direction: column;">
+                <div style="flex: 1; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding-bottom: 10px; border-bottom: 2px solid #E5E7EB;">
+                    ${weekData.map((w, idx) => {
+            const barHeight = w.count > 0 ? Math.max(20, (w.count / maxCount) * chartHeight) : 8;
+            const isToday = idx === 6;
+            return `
+                        <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                            <span style="font-size: 0.85rem; font-weight: 700; color: ${isToday ? '#3B82F6' : 'var(--text-main)'};">${w.count}</span>
+                            <div style="width: 100%; max-width: 40px; height: ${barHeight}px; background: linear-gradient(180deg, ${isToday ? '#3B82F6' : '#60A5FA'} 0%, ${isToday ? '#1D4ED8' : '#3B82F6'} 100%); border-radius: 6px 6px 0 0; transition: height 0.6s ease-out; animation: barRise 0.6s ease-out; box-shadow: 0 -2px 8px ${isToday ? 'rgba(59, 130, 246, 0.4)' : 'rgba(59, 130, 246, 0.2)'};"></div>
+                        </div>
+                    `;
+        }).join('')}
                 </div>
-                <div style="display: flex; justify-content: space-around; align-items: center;">
-                    ${weekData.map(w => `<span style="font-size: 0.875rem; color: var(--text-muted);">${w.week}</span>`).join('')}
+                <div style="display: flex; justify-content: space-between; padding-top: 10px;">
+                    ${weekData.map((w, idx) => {
+            const isToday = idx === 6;
+            return `
+                        <div style="flex: 1; text-align: center;">
+                            <div style="font-size: 0.75rem; font-weight: ${isToday ? '700' : '500'}; color: ${isToday ? '#3B82F6' : 'var(--text-muted)'};">${w.day}</div>
+                        </div>
+                    `;
+        }).join('')}
                 </div>
             </div>
+            <style>
+                @keyframes barRise { from { height: 0; } }
+            </style>
         `;
     }
-    
-    // Medicine Usage
+
+    // ========================================
+    // Chart 3: Medicine Usage (Donut Chart with Legend)
+    // ========================================
     const medicineChart = document.querySelectorAll('.chart-card')[2]?.querySelector('.chart-placeholder');
     if (medicineChart) {
         const categories = {};
@@ -369,30 +407,152 @@ function loadAnalytics() {
         if (Object.keys(categories).length === 0) {
             Object.assign(categories, { 'Analgesics': 2, 'Antibiotics': 2, 'Cardiac': 2, 'Emergency': 1, 'Allergy': 1, 'Gastric': 1, 'Anti-nausea': 1 });
         }
+
         const sortedCategories = Object.entries(categories).sort((a, b) => b[1] - a[1]);
+        const total = sortedCategories.reduce((sum, [, count]) => sum + count, 0);
+
+        // SVG Donut Chart
+        const size = 120;
+        const strokeWidth = 20;
+        const radius = (size - strokeWidth) / 2;
+        const circumference = 2 * Math.PI * radius;
+
+        let cumulativePercent = 0;
+        const segments = sortedCategories.map(([category, count], idx) => {
+            const percent = count / total;
+            const offset = circumference * cumulativePercent;
+            const length = circumference * percent;
+            cumulativePercent += percent;
+            return { category, count, percent, offset, length, color: chartColors[idx % chartColors.length] };
+        });
+
         medicineChart.innerHTML = `
-            <div style="padding: 20px; width: 100%;">
-                <ul style="list-style: none; padding: 0; margin: 0;">
-                    ${sortedCategories.map(([category, count]) => `
-                        <li style="display: flex; align-items: center; margin-bottom: 12px;">
-                            <span style="width: 8px; height: 8px; background: #3B82F6; border-radius: 50%; margin-right: 12px; flex-shrink: 0;"></span>
-                            <span style="flex: 1; font-size: 1rem; color: var(--text-main);">${category}:</span>
-                            <span style="font-weight: 600; color: var(--text-main);">${count}</span>
-                        </li>
+            <div style="padding: 15px; width: 100%; display: flex; gap: 20px; align-items: center;">
+                <div style="flex: 0 0 auto; position: relative;">
+                    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="transform: rotate(-90deg);">
+                        <circle cx="${size / 2}" cy="${size / 2}" r="${radius}" fill="none" stroke="#E5E7EB" stroke-width="${strokeWidth}"/>
+                        ${segments.map((seg, idx) => `
+                            <circle 
+                                cx="${size / 2}" 
+                                cy="${size / 2}" 
+                                r="${radius}" 
+                                fill="none" 
+                                stroke="${seg.color}" 
+                                stroke-width="${strokeWidth}"
+                                stroke-dasharray="${seg.length} ${circumference - seg.length}"
+                                stroke-dashoffset="-${seg.offset}"
+                                style="animation: donutSegment 1s ease-out ${idx * 0.1}s both;"
+                            />
+                        `).join('')}
+                    </svg>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);">${total}</div>
+                        <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Total</div>
+                    </div>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 6px; max-height: 160px; overflow-y: auto;">
+                    ${segments.slice(0, 6).map(seg => `
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="width: 10px; height: 10px; background: ${seg.color}; border-radius: 3px; flex-shrink: 0;"></span>
+                            <span style="flex: 1; font-size: 0.8rem; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${seg.category}</span>
+                            <span style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted);">${seg.count}</span>
+                        </div>
                     `).join('')}
-                </ul>
+                </div>
             </div>
+            <style>
+                @keyframes donutSegment { 
+                    from { stroke-dasharray: 0 ${circumference}; } 
+                }
+            </style>
         `;
     }
-    
-    // Ship Route Map
+
+    // ========================================
+    // Chart 4: Ship Route Health Incidents (Interactive Map)
+    // ========================================
     const mapChart = document.querySelectorAll('.chart-card')[3]?.querySelector('.chart-placeholder');
     if (mapChart) {
+        // Sample maritime route locations with health incident data
+        const routeLocations = [
+            { name: 'Singapore Port', x: 72, y: 58, incidents: 2, type: 'port' },
+            { name: 'Mumbai', x: 55, y: 48, incidents: 1, type: 'port' },
+            { name: 'Suez Canal', x: 45, y: 42, incidents: 0, type: 'transit' },
+            { name: 'Mediterranean', x: 38, y: 38, incidents: 1, type: 'sea' },
+            { name: 'Rotterdam', x: 32, y: 28, incidents: 3, type: 'port' },
+            { name: 'Atlantic Ocean', x: 22, y: 45, incidents: 0, type: 'sea' }
+        ];
+
+        // Calculate incidents from actual emergency data
+        const totalIncidents = emergencies.length || routeLocations.reduce((sum, loc) => sum + loc.incidents, 0);
+
         mapChart.innerHTML = `
-            <div style="padding: 20px; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
-                <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">🗺️</div>
-                <div style="font-size: 1rem; font-weight: 600; color: var(--text-main); margin-bottom: 0.5rem;">Geographic Map</div>
-                <div style="font-size: 0.875rem; color: var(--text-muted);">Health Incidents by Location</div>
+            <div style="padding: 15px; width: 100%; height: 100%; display: flex; flex-direction: column;">
+                <div style="flex: 1; position: relative; background: linear-gradient(180deg, #EBF4FF 0%, #DBEAFE 100%); border-radius: 12px; overflow: hidden; min-height: 120px;">
+                    <!-- Simplified World Map SVG -->
+                    <svg viewBox="0 0 100 60" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0;">
+                        <!-- Ocean background -->
+                        <rect x="0" y="0" width="100" height="60" fill="#DBEAFE"/>
+                        
+                        <!-- Simplified continents -->
+                        <path d="M15,15 Q20,12 28,14 L32,18 Q35,22 30,28 L22,32 Q18,30 15,25 Z" fill="#86EFAC" opacity="0.7"/>
+                        <path d="M35,25 Q42,22 50,24 L55,30 Q52,38 45,42 L38,40 Q32,35 35,25 Z" fill="#86EFAC" opacity="0.7"/>
+                        <path d="M48,18 Q58,15 68,18 L72,25 Q70,35 60,38 L50,35 Q45,28 48,18 Z" fill="#86EFAC" opacity="0.7"/>
+                        <path d="M70,35 Q78,32 85,38 L88,48 Q85,55 75,55 L68,50 Q65,42 70,35 Z" fill="#86EFAC" opacity="0.7"/>
+                        
+                        <!-- Ship Route Line -->
+                        <path d="M72,55 Q65,50 55,48 Q45,42 38,38 Q32,30 22,35" 
+                              fill="none" 
+                              stroke="#3B82F6" 
+                              stroke-width="0.8" 
+                              stroke-dasharray="2,1"
+                              opacity="0.6"/>
+                        
+                        <!-- Location markers -->
+                        ${routeLocations.map((loc, idx) => {
+            const color = loc.incidents > 2 ? '#EF4444' : loc.incidents > 0 ? '#F59E0B' : '#10B981';
+            const size = loc.type === 'port' ? 4 : 3;
+            return `
+                                <g class="map-marker" style="cursor: pointer; animation: markerPulse 2s ease-in-out ${idx * 0.2}s infinite;">
+                                    <circle cx="${loc.x}" cy="${loc.y}" r="${size}" fill="${color}" opacity="0.3">
+                                        <animate attributeName="r" values="${size};${size + 2};${size}" dur="2s" repeatCount="indefinite"/>
+                                        <animate attributeName="opacity" values="0.3;0.1;0.3" dur="2s" repeatCount="indefinite"/>
+                                    </circle>
+                                    <circle cx="${loc.x}" cy="${loc.y}" r="${size * 0.6}" fill="${color}"/>
+                                    ${loc.incidents > 0 ? `<text x="${loc.x}" y="${loc.y + 0.8}" font-size="2.5" fill="white" text-anchor="middle" font-weight="bold">${loc.incidents}</text>` : ''}
+                                </g>
+                            `;
+        }).join('')}
+                    </svg>
+                </div>
+                
+                <!-- Legend -->
+                <div style="display: flex; justify-content: center; gap: 16px; margin-top: 12px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span style="width: 10px; height: 10px; background: #10B981; border-radius: 50%;"></span>
+                        <span style="font-size: 0.7rem; color: var(--text-muted);">No Incidents</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span style="width: 10px; height: 10px; background: #F59E0B; border-radius: 50%;"></span>
+                        <span style="font-size: 0.7rem; color: var(--text-muted);">1-2 Incidents</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 5px;">
+                        <span style="width: 10px; height: 10px; background: #EF4444; border-radius: 50%;"></span>
+                        <span style="font-size: 0.7rem; color: var(--text-muted);">3+ Incidents</span>
+                    </div>
+                </div>
+                
+                <!-- Stats Summary -->
+                <div style="display: flex; justify-content: center; gap: 24px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #E5E7EB;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.25rem; font-weight: 700; color: #3B82F6;">${totalIncidents}</div>
+                        <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Total Incidents</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 1.25rem; font-weight: 700; color: #10B981;">${routeLocations.length}</div>
+                        <div style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase;">Locations</div>
+                    </div>
+                </div>
             </div>
         `;
     }
@@ -490,7 +650,7 @@ function closeMedicineModal() {
 function saveVisit() {
     const form = document.getElementById('visitForm');
     if (!form) return;
-    
+
     const data = {
         crewName: form.querySelector('[name="crewName"]')?.value.trim(),
         complaint: form.querySelector('[name="complaint"]')?.value.trim(),
@@ -498,12 +658,12 @@ function saveVisit() {
         treatment: form.querySelector('[name="treatment"]')?.value.trim(),
         remarks: form.querySelector('[name="remarks"]')?.value.trim()
     };
-    
+
     if (!data.crewName || !data.complaint || !data.diagnosis || !data.treatment) {
         utils.showNotification('Please fill in all required fields', 'error');
         return;
     }
-    
+
     const visits = utils.load(STORAGE_KEYS.VISITS) || [];
     const newVisit = {
         id: Date.now().toString(),
@@ -512,17 +672,17 @@ function saveVisit() {
         medic: 'Dr. Smith',
         condition: 'Illness'
     };
-    
+
     visits.unshift(newVisit);
     utils.save(STORAGE_KEYS.VISITS, visits);
-    
+
     const crew = utils.load(STORAGE_KEYS.CREW) || [];
     const crewMember = crew.find(c => c.name === data.crewName);
     if (crewMember) {
         crewMember.lastVisit = newVisit.date;
         utils.save(STORAGE_KEYS.CREW, crew);
     }
-    
+
     utils.showNotification('Visit record saved successfully!', 'success');
     closeModal();
     loadVisitLog();
@@ -531,7 +691,7 @@ function saveVisit() {
 function saveMedicine() {
     const form = document.getElementById('medicineForm');
     if (!form) return;
-    
+
     const data = {
         name: form.querySelector('[name="name"]')?.value.trim(),
         stock: parseInt(form.querySelector('[name="stock"]')?.value),
@@ -541,15 +701,15 @@ function saveMedicine() {
         location: form.querySelector('[name="location"]')?.value.trim(),
         category: form.querySelector('[name="category"]')?.value.trim()
     };
-    
+
     if (!data.name || !data.stock || !data.unit || !data.expiry || !data.reorderLevel || !data.location || !data.category) {
         utils.showNotification('Please fill in all required fields', 'error');
         return;
     }
-    
+
     const medicines = utils.load(STORAGE_KEYS.MEDICINES) || [];
     const editId = form.dataset.editId;
-    
+
     if (editId) {
         const index = medicines.findIndex(m => m.id === editId);
         if (index !== -1) {
@@ -560,7 +720,7 @@ function saveMedicine() {
         medicines.push({ id: Date.now().toString(), ...data });
         utils.showNotification('Medicine added successfully!', 'success');
     }
-    
+
     utils.save(STORAGE_KEYS.MEDICINES, medicines);
     closeMedicineModal();
     loadMedicineInventory();
@@ -577,7 +737,7 @@ function deleteMedicine(medicineId) {
 function saveEmergency(event) {
     event.preventDefault();
     const form = document.getElementById('emergencyForm') || event.target;
-    
+
     const data = {
         incidentType: document.getElementById('incidentTypeInput')?.value,
         dateTime: document.getElementById('emergencyDateTime')?.value,
@@ -587,12 +747,12 @@ function saveEmergency(event) {
         evacuation: document.getElementById('emergencyEvacuation')?.value.trim(),
         outcome: document.getElementById('emergencyOutcome')?.value.trim()
     };
-    
+
     if (!data.incidentType || !data.dateTime || !data.crewName || !data.location || !data.treatment) {
         utils.showNotification('Please fill in all required fields', 'error');
         return;
     }
-    
+
     const emergencies = utils.load(STORAGE_KEYS.EMERGENCIES) || [];
     emergencies.unshift({
         id: Date.now().toString(),
@@ -605,7 +765,7 @@ function saveEmergency(event) {
         outcome: data.outcome || '',
         timestamp: new Date(data.dateTime).getTime()
     });
-    
+
     utils.save(STORAGE_KEYS.EMERGENCIES, emergencies);
     utils.showNotification('Emergency case logged successfully!', 'success');
     form.reset();
@@ -624,12 +784,12 @@ function saveClinicInfo(event) {
         medicInCharge: form.querySelector('[placeholder="Enter medic name"]')?.value.trim(),
         medicalLicense: form.querySelector('[placeholder="Enter license number"]')?.value.trim()
     };
-    
+
     if (!data.vesselName || !data.vesselIMO || !data.medicInCharge || !data.medicalLicense) {
         utils.showNotification('Please fill in all required fields', 'error');
         return;
     }
-    
+
     utils.save(STORAGE_KEYS.CLINIC_INFO, data);
     utils.showNotification('Clinic information saved successfully!', 'success');
 }
@@ -639,7 +799,7 @@ async function submitComplaint(event) {
     const form = event.target;
     const submitBtn = form.querySelector('.submit-btn');
     const successMessage = document.getElementById('successMessage');
-    
+
     const refId = 'COMP-' + Math.floor(1000 + Math.random() * 9000);
     const templateParams = {
         category: document.getElementById('categoryInput')?.value || 'Not specified',
@@ -652,16 +812,16 @@ async function submitComplaint(event) {
         reference_id: refId,
         submission_time: new Date().toLocaleString()
     };
-    
+
     if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending...';
     }
-    
+
     try {
         if (typeof emailjs === 'undefined') throw new Error('EmailJS not loaded. Please refresh the page.');
         await emailjs.send(EMAILJS_CONFIG.serviceId, EMAILJS_CONFIG.templateId, templateParams, EMAILJS_CONFIG.publicKey);
-        
+
         if (successMessage) {
             successMessage.innerHTML = `✓ Complaint submitted successfully!<br>Reference ID: <strong>${refId}</strong><br>Your complaint has been sent.`;
             successMessage.style.display = 'block';
@@ -669,7 +829,7 @@ async function submitComplaint(event) {
             successMessage.style.borderColor = '#16a34a';
             successMessage.style.color = '#16a34a';
         }
-        
+
         setTimeout(() => {
             if (successMessage) successMessage.style.display = 'none';
             form.reset();
@@ -720,11 +880,11 @@ function uploadReport() {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.pdf,.jpg,.jpeg,.png';
-    input.onchange = function(e) {
+    input.onchange = function (e) {
         const file = e.target.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 const crew = utils.load(STORAGE_KEYS.CREW) || [];
                 const crewMember = crew.find(c => c.id === selectedCrew.id);
                 if (crewMember) {
@@ -754,7 +914,7 @@ function printSummary() {
     }
     const visits = utils.load(STORAGE_KEYS.VISITS) || [];
     const crewVisits = visits.filter(v => v.crewName === selectedCrew.name);
-    
+
     const htmlContent = `
         <!DOCTYPE html><html><head><title>Crew Medical Summary - ${selectedCrew.name}</title>
         <style>body { font-family: Arial, sans-serif; padding: 20px; } h1 { color: #003d82; }
@@ -775,7 +935,7 @@ function printSummary() {
         ${crewVisits.map(v => `<tr><td>${v.date}</td><td>${v.complaint}</td><td>${v.diagnosis}</td><td>${v.treatment}</td></tr>`).join('')}
         </tbody></table></body></html>
     `;
-    
+
     const printWindow = window.open('', '', 'height=600,width=800');
     printWindow.document.write(htmlContent);
     printWindow.document.close();
@@ -796,7 +956,7 @@ function exportData() {
         complaints: utils.load(STORAGE_KEYS.COMPLAINTS) || [],
         exportDate: new Date().toISOString()
     };
-    
+
     const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -815,7 +975,7 @@ function generateEmergencyPDF() {
         utils.showNotification('No emergency records to export', 'error');
         return;
     }
-    
+
     const htmlContent = `
         <!DOCTYPE html><html><head><title>Emergency Cases Report</title>
         <style>body { font-family: Arial, sans-serif; padding: 20px; } h1 { color: #003d82; }
@@ -829,7 +989,7 @@ function generateEmergencyPDF() {
         ${emergencies.map(e => `<tr><td>${e.dateTime}</td><td>${e.type}</td><td>${e.crewName}</td><td>${e.location}</td><td>${e.outcome}</td></tr>`).join('')}
         </tbody></table></body></html>
     `;
-    
+
     const printWindow = window.open('', '', 'height=600,width=800');
     printWindow.document.write(htmlContent);
     printWindow.document.close();
@@ -852,9 +1012,9 @@ function openTab(evt, tabName) {
 // Custom Dropdown Handler
 // ==========================================
 
-document.addEventListener('click', function(e) {
+document.addEventListener('click', function (e) {
     const target = e.target;
-    
+
     // Handle trigger click
     const trigger = target.closest('.custom-select-trigger');
     if (trigger) {
@@ -868,7 +1028,7 @@ document.addEventListener('click', function(e) {
             return;
         }
     }
-    
+
     // Handle option click
     const option = target.closest('.custom-option');
     if (option) {
@@ -879,23 +1039,23 @@ document.addEventListener('click', function(e) {
             if (!hiddenInput && wrapper.nextElementSibling?.tagName === 'INPUT' && wrapper.nextElementSibling.type === 'hidden') {
                 hiddenInput = wrapper.nextElementSibling;
             }
-            
+
             wrapper.querySelectorAll('.custom-option').forEach(opt => opt.classList.remove('selected'));
             option.classList.add('selected');
-            
+
             const selectedText = option.textContent;
             const triggerSpan = trigger?.querySelector('span');
             if (triggerSpan) {
                 triggerSpan.textContent = selectedText;
                 triggerSpan.style.color = '#0F172A';
             }
-            
+
             if (hiddenInput) {
                 hiddenInput.value = option.dataset.value;
                 hiddenInput.dispatchEvent(new Event('change', { bubbles: true }));
                 hiddenInput.dispatchEvent(new Event('input', { bubbles: true }));
             }
-            
+
             // Special handling for specific selects
             const wrapperId = wrapper.id;
             if (wrapperId === 'incident-type-select') {
@@ -908,12 +1068,12 @@ document.addEventListener('click', function(e) {
                 const priorityInput = document.getElementById('priorityInput');
                 if (priorityInput) priorityInput.value = option.dataset.value;
             }
-            
+
             wrapper.classList.remove('open');
             return;
         }
     }
-    
+
     // Close dropdowns on outside click
     if (!target.closest('.custom-select-wrapper')) {
         document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
@@ -953,10 +1113,10 @@ function closeSidebar() {
 // Page Initialization
 // ==========================================
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     console.log('MarMed Onboard Clinic - System Initialized');
     initializeData();
-    
+
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     const pageHandlers = {
         'index.html': () => loadDashboard(),
@@ -994,19 +1154,19 @@ document.addEventListener('DOMContentLoaded', function() {
             if (typeof emailjs !== 'undefined') emailjs.init(EMAILJS_CONFIG.publicKey);
         }
     };
-    
+
     if (pageHandlers[currentPage]) pageHandlers[currentPage]();
-    
+
     // Search functionality
     document.querySelectorAll('.search-bar').forEach(searchBar => {
-        searchBar.addEventListener('input', function() {
+        searchBar.addEventListener('input', function () {
             const table = this.nextElementSibling?.querySelector('table');
             if (table) utils.searchTable(this, table);
         });
     });
-    
+
     // Keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
             // Close sidebar if open on mobile
             if (window.innerWidth <= 768) {
@@ -1029,14 +1189,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (activeForm) activeForm.dispatchEvent(new Event('submit'));
         }
     });
-    
+
     // Highlight current page in navigation
     document.querySelectorAll('.sidebar nav a').forEach(link => {
         if (link.getAttribute('href') === currentPage) link.classList.add('active');
     });
-    
+
     // Sidebar interactions
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target.closest('.hamburger-btn')) {
             toggleSidebar();
             e.stopPropagation();
@@ -1046,20 +1206,20 @@ document.addEventListener('DOMContentLoaded', function() {
             closeSidebar();
         }
     });
-    
+
     // Handle window resize - close sidebar and restore scroll on desktop
     let resizeTimer;
-    window.addEventListener('resize', function() {
+    window.addEventListener('resize', function () {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function() {
+        resizeTimer = setTimeout(function () {
             if (window.innerWidth > 768) {
                 closeSidebar();
             }
         }, 250);
     });
-    
+
     // Modal close on outside click
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target.id === 'visitModal') closeModal();
         if (event.target.id === 'medicineModal') closeMedicineModal();
     };
