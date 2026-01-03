@@ -374,6 +374,13 @@ function loadAnalytics() {
 document.addEventListener('DOMContentLoaded', function () {
     if (window.location.pathname.split('/').pop() === 'analytics.html') {
         loadAnalytics();
+        
+        // Add event listener for voyage filter dropdown
+        const voyageFilterInput = document.querySelector('.custom-select-wrapper input[type="hidden"]');
+        if (voyageFilterInput) {
+            voyageFilterInput.addEventListener('change', loadAnalytics);
+            voyageFilterInput.addEventListener('input', loadAnalytics);
+        }
     }
 });
 

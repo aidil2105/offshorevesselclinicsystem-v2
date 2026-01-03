@@ -4,7 +4,37 @@
 
 function loadVisitLog() {
     const visits = utils.load(STORAGE_KEYS.VISITS) || [];
-    loadTable(visits, ['date', 'crewName', 'complaint', 'diagnosis', 'treatment', 'medic']);
+    applyFilters();
+}
+
+function applyFilters() {
+    const visits = utils.load(STORAGE_KEYS.VISITS) || [];
+    
+    // Get filter values - find dropdowns by their trigger text
+    const conditionWrapper = Array.from(document.querySelectorAll('.custom-select-wrapper')).find(w => {
+        const span = w.querySelector('.custom-select-trigger span');
+        return span && (span.textContent.includes('Conditions') || span.textContent.includes('All Conditions'));
+    });
+    const medicWrapper = Array.from(document.querySelectorAll('.custom-select-wrapper')).find(w => {
+        const span = w.querySelector('.custom-select-trigger span');
+        return span && (span.textContent.includes('Medics') || span.textContent.includes('All Medics'));
+    });
+    
+    const conditionFilter = conditionWrapper?.querySelector('input[type="hidden"]')?.value || 'All Conditions';
+    const medicFilter = medicWrapper?.querySelector('input[type="hidden"]')?.value || 'All Medics';
+    
+    // Filter visits
+    let filteredVisits = visits;
+    
+    if (conditionFilter !== 'All Conditions') {
+        filteredVisits = filteredVisits.filter(v => v.condition === conditionFilter);
+    }
+    
+    if (medicFilter !== 'All Medics') {
+        filteredVisits = filteredVisits.filter(v => v.medic === medicFilter);
+    }
+    
+    loadTable(filteredVisits, ['date', 'crewName', 'complaint', 'diagnosis', 'treatment', 'medic']);
 }
 
 function openModal() {
@@ -67,6 +97,13 @@ document.addEventListener('DOMContentLoaded', function () {
         loadVisitLog();
         const visitForm = document.getElementById('visitForm');
         if (visitForm) visitForm.onsubmit = (e) => { e.preventDefault(); saveVisit(); };
+        
+        // Add event listeners for filter dropdowns
+        const filterInputs = document.querySelectorAll('.custom-select-wrapper input[type="hidden"]');
+        filterInputs.forEach(input => {
+            input.addEventListener('change', applyFilters);
+            input.addEventListener('input', applyFilters);
+        });
     }
 
     // Modal close on outside click

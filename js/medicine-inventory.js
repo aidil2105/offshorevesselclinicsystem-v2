@@ -3,8 +3,72 @@
    ========================================== */
 
 function loadMedicineInventory() {
+    applyMedicineFilters();
+}
+
+function applyMedicineFilters() {
     const medicines = utils.load(STORAGE_KEYS.MEDICINES) || [];
-    loadTable(medicines, [
+    
+    // Get filter values - find dropdowns by their trigger text
+    const stockWrapper = Array.from(document.querySelectorAll('.custom-select-wrapper')).find(w => {
+        const span = w.querySelector('.custom-select-trigger span');
+        return span && (span.textContent.includes('Stock Levels') || span.textContent.includes('All Stock'));
+    });
+    const expiryWrapper = Array.from(document.querySelectorAll('.custom-select-wrapper')).find(w => {
+        const span = w.querySelector('.custom-select-trigger span');
+        return span && (span.textContent.includes('Expiry') || span.textContent.includes('All Expiry'));
+    });
+    const categoryWrapper = Array.from(document.querySelectorAll('.custom-select-wrapper')).find(w => {
+        const span = w.querySelector('.custom-select-trigger span');
+        return span && (span.textContent.includes('Categories') || span.textContent.includes('All Categories'));
+    });
+    
+    const stockFilter = stockWrapper?.querySelector('input[type="hidden"]')?.value || 'All Stock Levels';
+    const expiryFilter = expiryWrapper?.querySelector('input[type="hidden"]')?.value || 'All Expiry Dates';
+    const categoryFilter = categoryWrapper?.querySelector('input[type="hidden"]')?.value || 'All Categories';
+    
+    // Filter medicines
+    let filteredMedicines = medicines;
+    
+    // Filter by stock level
+    if (stockFilter !== 'All Stock Levels') {
+        if (stockFilter === 'Critical (Below 10)') {
+            filteredMedicines = filteredMedicines.filter(m => m.stock < 10);
+        } else if (stockFilter === 'Low (10-25)') {
+            filteredMedicines = filteredMedicines.filter(m => m.stock >= 10 && m.stock <= 25);
+        } else if (stockFilter === 'Good (Above 25)') {
+            filteredMedicines = filteredMedicines.filter(m => m.stock > 25);
+        }
+    }
+    
+    // Filter by expiry date
+    if (expiryFilter !== 'All Expiry Dates') {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const thirtyDaysFromNow = new Date(today);
+        thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
+        
+        filteredMedicines = filteredMedicines.filter(m => {
+            const expiryDate = new Date(m.expiry);
+            expiryDate.setHours(0, 0, 0, 0);
+            
+            if (expiryFilter === 'Expired') {
+                return expiryDate < today;
+            } else if (expiryFilter === 'Expiring Soon (30 days)') {
+                return expiryDate >= today && expiryDate <= thirtyDaysFromNow;
+            } else if (expiryFilter === 'Valid') {
+                return expiryDate > thirtyDaysFromNow;
+            }
+            return true;
+        });
+    }
+    
+    // Filter by category
+    if (categoryFilter !== 'All Categories') {
+        filteredMedicines = filteredMedicines.filter(m => m.category === categoryFilter);
+    }
+    
+    loadTable(filteredMedicines, [
         (m) => `<td>${m.name}</td>`,
         (m) => {
             const stockClass = m.stock < m.reorderLevel ? 'stock-low' : m.stock < m.reorderLevel * 2 ? 'stock-medium' : 'stock-good';
@@ -117,7 +181,7 @@ function saveMedicine() {
 
     utils.save(STORAGE_KEYS.MEDICINES, medicines);
     closeMedicineModal();
-    loadMedicineInventory();
+    applyMedicineFilters();
 }
 
 function deleteMedicine(medicineId) {
@@ -125,7 +189,7 @@ function deleteMedicine(medicineId) {
     const medicines = utils.load(STORAGE_KEYS.MEDICINES) || [];
     utils.save(STORAGE_KEYS.MEDICINES, medicines.filter(m => m.id !== medicineId));
     utils.showNotification('Medicine deleted successfully!', 'success');
-    loadMedicineInventory();
+    applyMedicineFilters();
 }
 
 // Initialize medicine inventory page
@@ -134,6 +198,13 @@ document.addEventListener('DOMContentLoaded', function () {
         loadMedicineInventory();
         const addBtn = document.querySelector('.add-btn');
         if (addBtn) addBtn.onclick = () => openMedicineModal();
+        
+        // Add event listeners for filter dropdowns
+        const filterInputs = document.querySelectorAll('.custom-select-wrapper input[type="hidden"]');
+        filterInputs.forEach(input => {
+            input.addEventListener('change', applyMedicineFilters);
+            input.addEventListener('input', applyMedicineFilters);
+        });
     }
 
     // Modal close on outside click
