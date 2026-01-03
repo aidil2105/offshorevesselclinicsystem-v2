@@ -33,18 +33,22 @@ function loadDashboard() {
             const count = visits.filter(v => v.date === dateStr).length;
             last7Days.push({ date: dateStr, count });
         }
+        const maxCount = Math.max(...last7Days.map(d => d.count), 1);
+        const chartHeight = 150;
+        const maxBarHeight = chartHeight - 30; // Leave space for labels
+        const scaleFactor = maxCount === 1 ? 0.3 : 1;
+        
         chartPlaceholder.innerHTML = `
             <div style="padding: 20px; width: 100%; height: 100%; display: flex; flex-direction: column;">
-                <div style="flex: 1; display: flex; align-items: flex-end; justify-content: space-around; gap: 8px; min-height: 150px;">
+                <div style="flex: 1; display: flex; align-items: flex-end; justify-content: space-around; gap: 8px; padding-bottom: 0; border-bottom: 2px solid #E5E7EB; min-height: ${chartHeight}px;">
                     ${last7Days.map((day, idx) => {
-            const maxCount = Math.max(...last7Days.map(d => d.count), 1);
-            const barHeightPercent = day.count > 0 ? Math.max(15, (day.count / maxCount) * 100) : 8;
+            const barHeight = day.count > 0 ? Math.max(12, (day.count / maxCount) * maxBarHeight * scaleFactor) : 8;
             const isToday = idx === 6;
             return `
-                        <div style="flex: 1; max-width: 50px; display: flex; flex-direction: column; align-items: center; height: 100%;">
-                            <span style="font-size: 0.9rem; font-weight: 700; color: ${isToday ? '#3B82F6' : '#1E3A8A'}; margin-bottom: 6px;">${day.count}</span>
-                            <div style="flex: 1; width: 100%; display: flex; align-items: flex-end;">
-                                <div style="width: 100%; height: ${barHeightPercent}%; min-height: 8px; background: linear-gradient(180deg, ${isToday ? '#3B82F6' : '#60A5FA'} 0%, ${isToday ? '#1D4ED8' : '#3B82F6'} 100%); border-radius: 6px 6px 0 0; box-shadow: 0 -2px 6px rgba(59, 130, 246, 0.2);"></div>
+                        <div style="flex: 1; max-width: 50px; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
+                            <span style="font-size: 0.9rem; font-weight: 700; color: ${isToday ? '#3B82F6' : '#1E3A8A'}; margin-bottom: 6px; flex-shrink: 0;">${day.count}</span>
+                            <div style="width: 100%; display: flex; align-items: flex-end; justify-content: center; height: ${chartHeight}px;">
+                                <div style="width: 100%; height: ${barHeight}px; min-height: 10px; background: linear-gradient(180deg, ${isToday ? '#3B82F6' : '#60A5FA'} 0%, ${isToday ? '#1D4ED8' : '#3B82F6'} 100%); border-radius: 6px 6px 0 0; box-shadow: 0 -2px 6px ${isToday ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.15)'}; align-self: flex-end;"></div>
                             </div>
                         </div>
                     `;

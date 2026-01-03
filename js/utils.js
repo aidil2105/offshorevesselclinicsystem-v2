@@ -119,24 +119,96 @@ if (!document.getElementById('notification-styles')) {
 
 function initializeData() {
     const defaults = {
-        [STORAGE_KEYS.CREW]: [
-            { id: '1', name: 'James Anderson', rank: 'Captain', lastVisit: '2025-11-20', healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
-            { id: '2', name: 'Maria Santos', rank: 'Chief Engineer', lastVisit: '2025-11-18', healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
-            { id: '3', name: 'David Kim', rank: 'First Mate', lastVisit: '2025-11-15', healthStatus: 'Under Observation', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
-            { id: '4', name: 'Sarah Thompson', rank: 'Second Engineer', lastVisit: '2025-11-10', healthStatus: 'Fit for Duty', vaccination: 'Due Soon', medicalHistory: [], vaccinationRecord: [] },
-            { id: '5', name: 'Mohammed Ali', rank: 'Deck Officer', lastVisit: '2025-11-08', healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
-            { id: '6', name: 'Elena Rodriguez', rank: 'Cook', lastVisit: '2025-11-05', healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
-            { id: '7', name: 'John Peterson', rank: 'AB Seaman', lastVisit: '2025-10-28', healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] }
-        ],
-        [STORAGE_KEYS.VISITS]: [
-            { id: '1', date: '2025-11-25', crewName: 'James Anderson', complaint: 'Headache, Nausea', diagnosis: 'Seasickness', treatment: 'Antiemetic medication', medic: 'Dr. Smith', remarks: '', condition: 'Illness' },
-            { id: '2', date: '2025-11-24', crewName: 'Maria Santos', complaint: 'Minor hand laceration', diagnosis: 'Superficial wound', treatment: 'Wound cleaning, bandaging', medic: 'Dr. Johnson', remarks: '', condition: 'Injury' },
-            { id: '3', date: '2025-11-23', crewName: 'David Kim', complaint: 'Cough, Fever', diagnosis: 'Upper respiratory infection', treatment: 'Antibiotics, rest', medic: 'Dr. Smith', remarks: '', condition: 'Illness' },
-            { id: '4', date: '2025-11-22', crewName: 'Sarah Thompson', complaint: 'Back pain', diagnosis: 'Muscle strain', treatment: 'Pain relief, physiotherapy', medic: 'Dr. Johnson', remarks: '', condition: 'Injury' },
-            { id: '5', date: '2025-11-21', crewName: 'Mohammed Ali', complaint: 'Routine check-up', diagnosis: 'Healthy', treatment: 'No treatment needed', medic: 'Dr. Smith', remarks: '', condition: 'Check-up' },
-            { id: '6', date: '2025-11-20', crewName: 'Elena Rodriguez', complaint: 'Skin rash', diagnosis: 'Contact dermatitis', treatment: 'Topical cream', medic: 'Dr. Johnson', remarks: '', condition: 'Illness' },
-            { id: '7', date: '2025-11-19', crewName: 'John Peterson', complaint: 'Eye irritation', diagnosis: 'Foreign body in eye', treatment: 'Eye wash, antibiotic drops', medic: 'Dr. Smith', remarks: '', condition: 'Injury' }
-        ],
+        [STORAGE_KEYS.CREW]: (() => {
+            // Generate dates between Dec 29, 2025 and Jan 4, 2026 for crew lastVisit
+            const formatDate = (date) => {
+                const d = new Date(date);
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            };
+            const startDate = new Date('2025-12-29');
+            const dates = [];
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(startDate);
+                date.setDate(date.getDate() + i); // Spread from Dec 29 to Jan 4
+                dates.push(formatDate(date));
+            }
+            return [
+                { id: '1', name: 'James Anderson', rank: 'Captain', lastVisit: dates[0], healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
+                { id: '2', name: 'Maria Santos', rank: 'Chief Engineer', lastVisit: dates[1], healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
+                { id: '3', name: 'David Kim', rank: 'First Mate', lastVisit: dates[2], healthStatus: 'Under Observation', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
+                { id: '4', name: 'Sarah Thompson', rank: 'Second Engineer', lastVisit: dates[3], healthStatus: 'Fit for Duty', vaccination: 'Due Soon', medicalHistory: [], vaccinationRecord: [] },
+                { id: '5', name: 'Mohammed Ali', rank: 'Deck Officer', lastVisit: dates[4], healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
+                { id: '6', name: 'Elena Rodriguez', rank: 'Cook', lastVisit: dates[5], healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] },
+                { id: '7', name: 'John Peterson', rank: 'AB Seaman', lastVisit: dates[6], healthStatus: 'Fit for Duty', vaccination: 'Current', medicalHistory: [], vaccinationRecord: [] }
+            ];
+        })(),
+        [STORAGE_KEYS.VISITS]: (() => {
+            // Generate random distribution of visits between Dec 29, 2025 and Jan 4, 2026
+            const formatDate = (date) => {
+                const d = new Date(date);
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            };
+            
+            const startDate = new Date('2025-12-29');
+            const crewNames = ['James Anderson', 'Maria Santos', 'David Kim', 'Sarah Thompson', 'Mohammed Ali', 'Elena Rodriguez', 'John Peterson'];
+            const complaints = [
+                { complaint: 'Headache, Nausea', diagnosis: 'Seasickness', treatment: 'Antiemetic medication', medic: 'Dr. Smith', condition: 'Illness' },
+                { complaint: 'Minor hand laceration', diagnosis: 'Superficial wound', treatment: 'Wound cleaning, bandaging', medic: 'Dr. Johnson', condition: 'Injury' },
+                { complaint: 'Cough, Fever', diagnosis: 'Upper respiratory infection', treatment: 'Antibiotics, rest', medic: 'Dr. Smith', condition: 'Illness' },
+                { complaint: 'Back pain', diagnosis: 'Muscle strain', treatment: 'Pain relief, physiotherapy', medic: 'Dr. Johnson', condition: 'Injury' },
+                { complaint: 'Routine check-up', diagnosis: 'Healthy', treatment: 'No treatment needed', medic: 'Dr. Smith', condition: 'Check-up' },
+                { complaint: 'Skin rash', diagnosis: 'Contact dermatitis', treatment: 'Topical cream', medic: 'Dr. Johnson', condition: 'Illness' },
+                { complaint: 'Eye irritation', diagnosis: 'Foreign body in eye', treatment: 'Eye wash, antibiotic drops', medic: 'Dr. Smith', condition: 'Injury' },
+                { complaint: 'Dizziness', diagnosis: 'Dehydration', treatment: 'Fluid replacement, rest', medic: 'Dr. Johnson', condition: 'Illness' },
+                { complaint: 'Ankle sprain', diagnosis: 'Ligament strain', treatment: 'RICE protocol, support bandage', medic: 'Dr. Smith', condition: 'Injury' },
+                { complaint: 'Insomnia', diagnosis: 'Sleep disturbance', treatment: 'Sleep hygiene advice', medic: 'Dr. Johnson', condition: 'Check-up' },
+                { complaint: 'Sore throat', diagnosis: 'Pharyngitis', treatment: 'Throat lozenges, hydration', medic: 'Dr. Smith', condition: 'Illness' },
+                { complaint: 'Minor burn', diagnosis: 'First degree burn', treatment: 'Cooling, aloe vera', medic: 'Dr. Johnson', condition: 'Injury' }
+            ];
+            
+            // Generate 12-15 visits randomly distributed across the 7 days
+            const totalVisits = 12 + Math.floor(Math.random() * 4); // 12-15 visits
+            const visits = [];
+            
+            for (let i = 0; i < totalVisits; i++) {
+                // Random day (0-6 for Dec 29 to Jan 4)
+                const dayOffset = Math.floor(Math.random() * 7);
+                const date = new Date(startDate);
+                date.setDate(date.getDate() + dayOffset);
+                
+                // Random crew member
+                const crewName = crewNames[Math.floor(Math.random() * crewNames.length)];
+                
+                // Random complaint
+                const complaintData = complaints[Math.floor(Math.random() * complaints.length)];
+                
+                visits.push({
+                    id: String(i + 1),
+                    date: formatDate(date),
+                    crewName: crewName,
+                    complaint: complaintData.complaint,
+                    diagnosis: complaintData.diagnosis,
+                    treatment: complaintData.treatment,
+                    medic: complaintData.medic,
+                    remarks: '',
+                    condition: complaintData.condition
+                });
+            }
+            
+            // Sort by date to keep them organized
+            visits.sort((a, b) => {
+                const dateA = new Date(a.date + 'T00:00:00');
+                const dateB = new Date(b.date + 'T00:00:00');
+                return dateA - dateB;
+            });
+            
+            // Reassign IDs sequentially
+            visits.forEach((visit, index) => {
+                visit.id = String(index + 1);
+            });
+            
+            return visits;
+        })(),
         [STORAGE_KEYS.EMERGENCIES]: [
             { id: '1', dateTime: '2025-11-15T14:30', type: 'Severe Injury', crewName: 'John Peterson', location: 'Engine Room', treatment: 'Immediate first aid, stabilized', evacuation: 'Evacuated to shore hospital', outcome: 'Stabilized, Evacuated', timestamp: new Date('2025-11-15T14:30').getTime() },
             { id: '2', dateTime: '2025-10-28T08:15', type: 'Cardiac Event', crewName: 'Robert Chen', location: 'Bridge', treatment: 'CPR, defibrillation', evacuation: 'Medical evacuation arranged', outcome: 'Recovered, Under Observation', timestamp: new Date('2025-10-28T08:15').getTime() },
@@ -166,6 +238,55 @@ function initializeData() {
     Object.keys(defaults).forEach(key => {
         if (!utils.load(key)) utils.save(key, defaults[key]);
     });
+}
+
+// ==========================================
+// Update Visit Log Dates to Recent Dates
+// ==========================================
+
+function updateVisitLogDates() {
+    const visits = utils.load(STORAGE_KEYS.VISITS) || [];
+    if (visits.length === 0) return;
+
+    const startDate = new Date('2025-12-29');
+    const endDate = new Date('2026-01-04');
+    let updated = false;
+
+    // Check if any visit date is outside the range Dec 29, 2025 - Jan 4, 2026
+    visits.forEach((visit, index) => {
+        if (!visit.date) return;
+        
+        const visitDate = new Date(visit.date + 'T00:00:00');
+        
+        // Update if date is outside the target range
+        if (visitDate < startDate || visitDate > endDate) {
+            // Spread dates from Dec 29, 2025 to Jan 4, 2026
+            const newDate = new Date(startDate);
+            newDate.setDate(newDate.getDate() + (index % 7)); // Distribute over 7 days
+            visit.date = utils.formatDate(newDate);
+            updated = true;
+        }
+    });
+
+    if (updated) {
+        utils.save(STORAGE_KEYS.VISITS, visits);
+        
+        // Also update crew lastVisit dates if they match old visit dates
+        const crew = utils.load(STORAGE_KEYS.CREW) || [];
+        crew.forEach(crewMember => {
+            const memberVisits = visits.filter(v => v.crewName === crewMember.name);
+            if (memberVisits.length > 0) {
+                // Update to most recent visit date for this crew member
+                const mostRecentVisit = memberVisits.sort((a, b) => 
+                    new Date(b.date + 'T00:00:00') - new Date(a.date + 'T00:00:00')
+                )[0];
+                if (mostRecentVisit) {
+                    crewMember.lastVisit = mostRecentVisit.date;
+                }
+            }
+        });
+        utils.save(STORAGE_KEYS.CREW, crew);
+    }
 }
 
 // ==========================================
@@ -290,6 +411,7 @@ document.addEventListener('click', function (e) {
 document.addEventListener('DOMContentLoaded', function () {
     console.log('MarMed Onboard Clinic - System Initialized');
     initializeData();
+    updateVisitLogDates(); // Update visit log dates to recent dates for graphs
 
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
