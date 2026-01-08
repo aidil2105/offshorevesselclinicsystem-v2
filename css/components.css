@@ -159,6 +159,47 @@
     border-color: var(--text-muted);
 }
 
+/* Action Buttons in Tables */
+.edit-btn {
+    background: var(--bg-surface);
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: var(--transition);
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+.edit-btn:hover {
+    background: var(--primary-light);
+    color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+
+.delete-btn {
+    background: linear-gradient(135deg, var(--danger) 0%, #DC2626 100%);
+    color: white;
+    border: none;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: var(--transition);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+.delete-btn:hover {
+    background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.4);
+}
+
 /* Tables */
 .table-container {
     background: var(--bg-surface);
@@ -193,6 +234,7 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
 }
 
 .data-table td {
@@ -200,15 +242,40 @@
     border-bottom: 1px solid var(--border-color);
     color: var(--text-main);
     font-size: 0.95rem;
+    vertical-align: middle;
 }
 
 .data-table tbody tr {
-    transition: var(--transition);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
 }
 
 .data-table tbody tr:hover {
     background: var(--primary-light);
     cursor: pointer;
+}
+
+/* Selected row state for interactive tables */
+.data-table tbody tr.selected {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.06) 100%) !important;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    border-left: 4px solid var(--primary);
+}
+
+.data-table tbody tr.selected td {
+    background-color: transparent !important;
+    font-weight: 500;
+    color: var(--text-header);
+}
+
+.data-table tbody tr.selected:hover {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.18) 0%, rgba(59, 130, 246, 0.10) 100%) !important;
+    box-shadow: 0 3px 12px rgba(59, 130, 246, 0.2);
+    border-left-color: var(--primary-hover);
+}
+
+.data-table tbody tr.selected:hover td {
+    background-color: transparent !important;
 }
 
 /* Profile Panel */
@@ -411,11 +478,35 @@ textarea.form-input {
 }
 
 /* Stock Status */
-.stock-low, .stock-medium, .stock-good {
+/* When stock classes are applied directly to table cells */
+.data-table td.stock-low,
+.data-table td.stock-medium,
+.data-table td.stock-good {
+    font-weight: 700;
+    padding: 1.25rem 1rem; /* Keep same padding as other cells */
+    border-radius: var(--radius-md);
+    display: table-cell;
+    vertical-align: middle;
+    line-height: 1.4;
+}
+
+/* When stock classes are applied to elements inside table cells (not on td itself) */
+.stock-low:not(td),
+.stock-medium:not(td),
+.stock-good:not(td) {
     font-weight: 700;
     padding: 0.35rem 0.75rem;
     border-radius: var(--radius-md);
     display: inline-block;
+    vertical-align: middle;
+    line-height: 1.4;
+}
+
+.data-table td .stock-low,
+.data-table td .stock-medium,
+.data-table td .stock-good {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .stock-low {

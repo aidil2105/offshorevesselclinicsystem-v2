@@ -4,7 +4,12 @@
 
 function loadEmergencies() {
     const emergencies = (utils.load(STORAGE_KEYS.EMERGENCIES) || []).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-    loadTable(emergencies, ['dateTime', 'type', 'crewName', 'location', 'outcome']);
+    loadTable(emergencies, ['dateTime', 'type', 'crewName', 'location', 'outcome'], '.data-table tbody', {
+        onRowClick: (row) => {
+            document.querySelectorAll('.data-table tbody tr').forEach(r => r.classList.remove('selected'));
+            row.classList.add('selected');
+        }
+    });
 }
 
 function saveEmergency(event) {

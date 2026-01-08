@@ -84,8 +84,8 @@ function applyMedicineFilters() {
         (m) => `<td>${m.location}</td>`,
         (m) => `<td>${m.category}</td>`,
         (m) => `<td>
-            <button onclick="openMedicineModal('${m.id}')" style="padding: 4px 8px; margin-right: 4px; cursor: pointer;">Edit</button>
-            <button onclick="deleteMedicine('${m.id}')" style="padding: 4px 8px; cursor: pointer; background: #dc2626; color: white; border: none; border-radius: 4px;">Delete</button>
+            <button class="edit-btn" onclick="openMedicineModal('${m.id}')">Edit</button>
+            <button class="delete-btn" onclick="deleteMedicine('${m.id}')">Delete</button>
         </td>`
     ]);
 }
